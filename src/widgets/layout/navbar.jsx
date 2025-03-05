@@ -24,7 +24,7 @@ export function Navbar({ routes, action }) {
   const width = useTransform(scrollY, [0, 100], ["100%", "100%"]);
   const left = useTransform(scrollY, [0, 100], ["50%", "0%"]);
   const translateX = useTransform(scrollY, [0, 100], ["-50%", "0%"]);
-  const navbarHeight = useTransform(scrollY, [0, 100], ["4rem", "4.5rem"]);
+  const navbarHeight = useTransform(scrollY, [0, 100], ["4.5rem", "4rem"]);
   const backgroundColor = useTransform(
     scrollY,
     [0, 100],
@@ -43,7 +43,7 @@ export function Navbar({ routes, action }) {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
-
+"I've been a Business Booster Club member for the past two years. A number of group members have referred me to new clients. Along with the new relationships I have made with other local business people, I am thankful for this. At each meeting, I look forward to keeping up with them and sharing references."
   const navList = (
     <ul className="mb-0 mt-0 flex flex-col gap-1 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       {routes.map(({ name, path, icon, href, target }) => (
@@ -120,7 +120,7 @@ export function Navbar({ routes, action }) {
               <Link
               to='/register'
               >
-                <Button variant="text" size="md" color="black" className="py-1.5 px-3 text-xs">
+                <Button variant="text"  className="py-1.5 px-3 text-sm text-[#A51B64]">
                   Join Us
                 </Button>
               </Link>
@@ -129,7 +129,7 @@ export function Navbar({ routes, action }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Button variant="text" size="md" color="black" className="py-1.5 px-3 text-xs">
+                <Button variant="text" className="py-1.5 px-3 text-sm text-[#A51B64]">
                   Login
                 </Button>
               </a>

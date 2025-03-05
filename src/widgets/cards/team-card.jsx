@@ -8,20 +8,22 @@ import "slick-carousel/slick/slick-theme.css";
 
 export function TeamCard({ img, name, position, socials }) {
   return (
-    <Card color="transparent" shadow={false} className="text-center mx-2 p-4">
+    <Card color="transparent" shadow={false} className="text-center mx-2  ">
       <Avatar
         src={img}
         alt={name}
         size="xxl"
         variant="rounded"
-        className="h-[12rem] w-full  object-cover shadow-xl rounded-2xl"
+        className="h-[12rem] w-[7rem]   object-cover shadow-xl rounded-2xl"
       />
-      <Typography variant="h5" color="blue-gray" className="mt-4 mb-1 font-semibold">
-        {name}
-      </Typography>
-      {position && (
+    <p className="mt-2 mb-1  font-semibold break-words text-center w-full">
+  {name}
+</p>
+
+
+      {/* {position && (
         <Typography className="text-gray-500 text-sm">{position}</Typography>
-      )}
+      )} */}
    
     </Card>
   );
@@ -47,15 +49,15 @@ export function TeamSlider({ teamData }) {
     infinite: true,
     speed: 800,
     slidesToShow: 9,
-    slidesToScroll: 2,
+    slidesToScroll: 3,
     autoplay: true,
     autoplaySpeed: 2000,
-    cssEase: "ease-out",
+    cssEase: "ease-in-out",
     pauseOnHover: true,
     arrows: false,
     responsive: [
-      { breakpoint: 1280, settings: { slidesToShow: 4 ,slidesToScroll:1} },
-      { breakpoint: 768, settings: { slidesToShow: 3,slidesToScroll:1 } },
+      { breakpoint: 1280, settings: { slidesToShow: 6 ,slidesToScroll:2} },
+      { breakpoint: 768, settings: { slidesToShow: 4,slidesToScroll:1 } },
       { breakpoint: 640, settings: { slidesToShow: 2,slidesToScroll:1 } },
     ],
   };
