@@ -46,7 +46,7 @@ export function TeamSlider({ teamData }) {
     dots: false,
     infinite: true,
     speed: 800,
-    slidesToShow: 6,
+    slidesToShow: 9,
     slidesToScroll: 2,
     autoplay: true,
     autoplaySpeed: 2000,
