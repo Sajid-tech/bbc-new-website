@@ -5,6 +5,9 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Register from "./pages/register";
 import { Navbar } from "./widgets/layout";
 import routes from "./routes";
+import Interest from "./pages/interest";
+import ThankYou from "./pages/thankyou";
+import Failure from "./pages/failure";
 import BusinessProfile from "./pages/business-profile";
 
 function App() {
@@ -23,6 +26,9 @@ function App() {
         )}
         <Route path="*" element={<Navigate to="/home" replace />} />
         <Route path="/register" element={<Register/>} />
+        <Route path="/interest" element={<Interest/>} />
+        <Route path="/thankyou" element={<ThankYou/>} />
+        <Route path="/failure" element={<Failure/>} />
         <Route path="/business-profile/:id" element={<BusinessProfile/>} />
       </Routes>
     </>
