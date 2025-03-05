@@ -7,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import { FingerPrintIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { PageTitle, Footer } from "@/widgets/layout";
-import { FeatureCard, TeamCard, TeamSlider } from "@/widgets/cards";
+import { FeatureCard, TeamSlider } from "@/widgets/cards";
 import { featuresData, contactData } from "@/data";
 import { RealStoriesSection } from "@/widgets/cards/stories-card";
 import { realStoriesData } from "@/data/stories-data";
@@ -17,7 +17,6 @@ import axios from "axios";
 
 export function Home() {
   const [teamData, setTeamData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -25,33 +24,25 @@ export function Home() {
       try {
         const response = await axios.get("https://businessboosters.club/public/api/getUser");
         if (response.data && response.data.profile) {
-          // Map the API data to the teamData structure
           const mappedData = response.data.profile.map((user) => ({
-            img: user.image ? `http://businessboosters.club/public/images/user_images/${user.image}` : "http://businessboosters.club/public/images/user_images/no_images.png", // Fallback image if no image is provided
+            img: user.image
+              ? `http://businessboosters.club/public/images/user_images/${user.image}`
+              : "http://businessboosters.club/public/images/user_images/no_images.png", 
             name: user.name || "Unknown",
             position: user.company_short || "Member",
-           
           }));
           setTeamData(mappedData);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
         setError("Failed to load user data.");
-      } finally {
-        setLoading(false);
       }
     };
-
+  
     fetchUserData();
   }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  
+  
   return (
     <>
       <div className="relative flex h-screen content-center items-center justify-center pt-16 pb-32">
@@ -116,7 +107,7 @@ export function Home() {
                 The small and medium business persons are slowly and surely suffering and losing out. In such a scenario the need was to fight back with these giants collectively hence the thought of forming a decent and family type businesses group came to Mr. Bhupendra Kotwal, Mr. Umesh Tulsiyan and Mr. Narendra Gehlot who took the lead and started consulting and convincing business friends who not only joined the mission but supported the idea. Purpose of the group is simple.
               </Typography>
               <Link to='/aboutus'>
-              <Button  className="w-full sm:w-auto px-8 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-300">read more</Button>
+              <Button  className="w-full sm:w-auto px-8 py-3 bg-[#A51B64] text-white rounded-lg hover:bg-[#A51B64] transition-colors duration-300">read more</Button>
              </Link>
             </div>
             <div className="mx-auto mt-24 flex w-full justify-center px-4 md:w-4/12 lg:mt-0">
@@ -141,6 +132,7 @@ export function Home() {
           The Trusted Partner You Can Have Faith In, Together we can do amazing things.
           </PageTitle>
           <div className="mt-24">
+          {error && <div className="text-red-500">{error}</div>}
       <TeamSlider teamData={teamData} />
       <TeamSliderPartner teamData={teamData} />
     </div>
@@ -284,20 +276,20 @@ we believe in <span className="text-black font-bold">“SABKA SATH SABKA VISHWAS
       </div>
 
       {/* Right Side: Button */}
+      <Link to={'/contact'}>
       <Button
         variant="filled"
         color="green"
         size="lg"
         className="relative overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-2xl"
-        onClick={() => {
-          // Add your button click logic here
-          console.log("Contact Us button clicked!");
-        }}
+      
       >
+        
         <span className="relative z-10">Contact Us</span>
         {/* Hover Animation Effect */}
         <span className="absolute inset-0 bg-green-600 opacity-0 hover:opacity-100 transition-opacity duration-500"></span>
       </Button>
+      </Link>
     </div>
       </section>
       <div className="bg-white">

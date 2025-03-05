@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Typography } from "@material-tailwind/react";
 import {
-    MapPinIcon,
-    MagnifyingGlassIcon,
-    PhoneIcon,
-    EnvelopeIcon,
-  
-    GlobeAltIcon,
-    ShareIcon,
-    XMarkIcon,
- 
-  } from "@heroicons/react/24/solid";
+  MapPinIcon,
+  MagnifyingGlassIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+
+  GlobeAltIcon,
+  ShareIcon,
+  XMarkIcon,
+
+} from "@heroicons/react/24/solid";
 import { Footer } from "@/widgets/layout";
 
 
@@ -34,24 +34,51 @@ const PartnerCard = ({ partner, openDialog }) => {
             <p className="text-sm text-gray-600 truncate">
               {partner.occupation || partner.category || "Professional"}
             </p>
+
+            {/* <p className="text-[13px]  text-indigo-600 line-clamp-2">
+  {partner.product || "Product/Services"}
+</p> */}
+            <span className="px-2 py-1 text-[13px] font-medium text-indigo-500 bg-indigo-50 rounded-md line-clamp-2">
+              {partner.product || "Product/Services"}
+            </span>
+
             <p className="mt-1 flex items-center text-xs text-gray-500">
               <MapPinIcon className="h-3 w-3 mr-1 flex-shrink-0" />
               <span className="truncate">{partner.area || "Location"}</span>
             </p>
           </div>
         </div>
-        
+
         <div className="mt-auto border-t border-gray-100">
           <div className="flex">
-            <button 
-              className="flex-1 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors border-r border-gray-100"
-              onClick={() => openDialog(partner)}
+            {partner.details_view === 1 ? (
+              <a
+                href={`/business-profile/${partner.company_short}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors border-r border-gray-100 text-center"
+              >
+                View Profile
+              </a>
+            ) : (
+              <button
+                className="flex-1 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors border-r border-gray-100"
+                onClick={() => openDialog(partner)}
+              >
+                View Profile
+              </button>
+            )}
+
+
+            <a
+
+              href={`https://api.whatsapp.com/send/?text=${partner.name} ${partner.mobile} ${partner.company} ${partner.occupation}`}
+              target="_blank"
             >
-              View Profile
-            </button>
-            <button className="flex items-center justify-center px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
-              <ShareIcon className="h-4 w-4" />
-            </button>
+              <button className="flex items-center justify-center px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+                <ShareIcon className="h-4 w-4" />
+              </button>
+            </a>
           </div>
         </div>
       </div>
@@ -161,12 +188,17 @@ const PartnerProfileDialog = ({ open, handleClose, partner }) => {
           >
             Close
           </button>
+          <a
 
-          <button
-            className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm transition-colors"
+            href={`https://api.whatsapp.com/send/?text=${partner.name} ${partner.mobile} ${partner.company} ${partner.occupation}`}
+            target="_blank"
           >
-            <ShareIcon className="h-4 w-4 mr-2" /> Share Profile
-          </button>
+            <button
+              className="flex items-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm transition-colors"
+            >
+              <ShareIcon className="h-4 w-4 mr-2" /> Share Profile
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -214,18 +246,27 @@ export function Services() {
         partner.area,
         partner.profile_mix
       ].filter(Boolean);
-      
-      return searchableFields.some(field => 
+
+      return searchableFields.some(field =>
         field.toLowerCase().includes(query)
       );
     });
-    
+
     setFilteredPartners(filtered);
   }, [searchQuery, partners]);
   const sortPartnersByName = () => {
     const sortedPartners = [...filteredPartners].sort((a, b) => a.name.localeCompare(b.name));
     setFilteredPartners(sortedPartners);
   };
+  const sortPartnersByCompany = () => {
+    const sortedPartners = [...filteredPartners].sort((a, b) => {
+      const companyA = a.company || ""; 
+      const companyB = b.company || ""; 
+      return companyA.localeCompare(companyB);
+    });
+    setFilteredPartners(sortedPartners);
+  };
+  
   const handleOpenDialog = (partner) => {
     setSelectedPartner(partner);
     setDialogOpen(true);
@@ -237,16 +278,16 @@ export function Services() {
 
   return (
     <>
-    <section className="relative block h-[30vh] bg-white">
-  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
-    <Typography variant="h1" color="gray" className="text-center font-bold text-4xl">
-      Our Awesome Partners
-    </Typography>
-  </div>
-</section>
+      <section className="relative block h-[30vh] bg-white">
+        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
+          <Typography variant="h1" color="gray" className="text-center font-bold text-4xl">
+            Our Awesome Partners
+          </Typography>
+        </div>
+      </section>
 
 
-      
+
       <section className="relative bg-gray-100 py-12">
         <div className="container mx-auto px-4">
           <div className="relative mb-8 -mt-16 flex w-full min-w-0 flex-col break-words bg-white rounded-lg shadow px-5 py-4">
@@ -261,12 +302,12 @@ export function Services() {
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
-              <button className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors md:w-auto w-full">
-                 Search
+              <button className="w-full sm:w-auto px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-300">
+                Search
               </button>
             </div>
           </div>
-          
+
           <div className="mt-8">
             {loading ? (
               <div className="flex justify-center items-center py-12 bg-white rounded-lg shadow">
@@ -283,21 +324,25 @@ export function Services() {
               <>
                 <div className="mb-5 flex justify-between items-center">
                   <h2 className="text-xl font-bold text-gray-900">
-                    Found {filteredPartners.length} partners
+                    
                   </h2>
                   <div className="flex gap-2">
-                    <button   onClick={sortPartnersByName}
-                     className="px-3 py-1 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 transition-colors">
+                    <button onClick={sortPartnersByName}
+                      className="px-3 py-1 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 transition-colors">
                       Sort by Name
                     </button>
-                   
+                    <button onClick={sortPartnersByCompany}
+                      className="px-3 py-1 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 transition-colors">
+                      Sort by Company
+                    </button>
+
                   </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {filteredPartners.map((partner) => (
-                    <PartnerCard 
-                      key={partner.id} 
-                      partner={partner} 
+                    <PartnerCard
+                      key={partner.id}
+                      partner={partner}
                       openDialog={handleOpenDialog}
                     />
                   ))}
@@ -307,13 +352,13 @@ export function Services() {
           </div>
         </div>
       </section>
-      
-      <PartnerProfileDialog 
-        open={dialogOpen} 
+
+      <PartnerProfileDialog
+        open={dialogOpen}
         handleClose={handleCloseDialog}
         partner={selectedPartner}
       />
-      
+
       <div className="bg-white">
         <Footer />
       </div>
