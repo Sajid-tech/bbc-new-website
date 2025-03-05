@@ -1,3 +1,4 @@
+
 import { Footer } from "@/widgets/layout";
 import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/solid";
 import { Button, Typography, Card, Input, Textarea } from "@material-tailwind/react";

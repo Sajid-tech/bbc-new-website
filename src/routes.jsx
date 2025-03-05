@@ -1,7 +1,8 @@
-import { Home, Profile, SignIn, SignUp} from "@/pages";
+
 import Services from "./pages/services";
 import Gallery from "./pages/gallery";
 import Contact from "./pages/contact";
+import { Home, Profile } from "./pages";
 
 export const routes = [
   {
