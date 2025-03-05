@@ -55,7 +55,6 @@ export function Footer({ title, description, socials, menus, copyright }) {
                       <Typography
                         as="a"
                         href={item.path}
-                        target="_blank"
                         rel="noreferrer"
                         variant="small"
                         className="mb-2 block font-normal text-blue-gray-500 hover:text-blue-gray-700"
@@ -115,15 +114,15 @@ Footer.defaultProps = {
     {
       name: "useful links",
       items: [
-        { name: "About Us", path: "https://www.creative-tim.com/presentation" },
-        { name: "Contact Us", path: "https://www.creative-tim.com/blog" },
+        { name: "About Us", path: "/aboutus" },
+        { name: "Contact Us", path: "/contact" },
         {
           name: "Services",
-          path: "https://www.github.com/creativetimofficial/material-tailwind?ref=mtk",
+          path: "/services",
         },
         {
           name: "Gallery",
-          path: "https://www.creative-tim.com/templates/free?ref=mtk",
+          path: "/gallery",
         },
       ],
     },

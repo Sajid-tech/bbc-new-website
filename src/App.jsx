@@ -8,13 +8,14 @@ import routes from "./routes";
 import Interest from "./pages/interest";
 import ThankYou from "./pages/thankyou";
 import Failure from "./pages/failure";
+import BusinessProfile from "./pages/business-profile";
 
 function App() {
   const { pathname } = useLocation();
-  
+  const isBusinessProfile = pathname.startsWith("/business-profile/");
   return (
     <>
-      {!(pathname === '/sign-in' || pathname === '/sign-up') && (
+      {!(pathname === '/sign-in' || pathname === '/sign-up'|| isBusinessProfile ) && (
         <Navbar routes={routes} />
       )}
       
@@ -28,6 +29,7 @@ function App() {
         <Route path="/interest" element={<Interest/>} />
         <Route path="/thankyou" element={<ThankYou/>} />
         <Route path="/failure" element={<Failure/>} />
+        <Route path="/business-profile/:id" element={<BusinessProfile/>} />
       </Routes>
     </>
   );

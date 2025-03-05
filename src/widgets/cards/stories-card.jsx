@@ -97,7 +97,7 @@ export function RealStoriesSection({ storiesData }) {
             <Typography variant="h2" className="font-bold text-gray-800 mb-6">
               Real Stories, Real People, And Real Outcomes
             </Typography>
-            <Typography variant="lead" className="text-gray-600 mb-8">
+            <Typography variant="lead" className="text-[#A51B64] text-2xl mb-8">
               Discover The Difference With Member Testimonials!
             </Typography>
             <Typography className="text-gray-600 mb-8">
