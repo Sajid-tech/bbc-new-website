@@ -4,57 +4,71 @@ import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/solid";
 import { Button, Typography, Card, Input, Textarea } from "@material-tailwind/react";
 import axios from "axios";
 import React, { useState } from "react";
-const FormLabel = ({ children, required }) => (
-    <label className="block text-sm font-semibold text-black mb-1">
-      {children}
-      {required && <span className="text-red-500 ml-1">*</span>}
-    </label>
-  );
-  
-  // Input Class Definitions
-  const inputClass = "w-full px-3 py-2.5 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 border-blue-500";
-export function Contact() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
 
+export function Contact() {
+    const [formData, setFormData] = useState({
+        person_name: "",
+        email: "",
+        phone: "",
+        message: "",
+    });
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+
+   
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        if (name === "phone") {
+            if (!/^\d*$/.test(value)) return; 
+        }
+    
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? (checked ? "Yes" : "No") : value,
+        }));
+    
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: "",
+        }));
+    };
+    
+    const validate = () => {
+        let tempErrors = {};
+        if (!formData.person_name) tempErrors.person_name = "Full Name is required";
+        if (!formData.email) tempErrors.email = "Email is required";
+        if (!formData.phone) tempErrors.phone = "Phone Number is required";
+      
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!validate()) return;
         setLoading(true);
-        setError("");
+        setErrors({});
 
-        const formData = new FormData();
-        formData.append("contact_name", name);
-        formData.append("contact_email", email);
-        formData.append("contact_mobile", phone);
-        formData.append("contact_message", message);
+        const formPayload = new FormData();
+        formPayload.append("contact_name", formData.person_name);
+        formPayload.append("contact_email", formData.email);
+        formPayload.append("contact_mobile", formData.phone);
+        formPayload.append("contact_message", formData.message);
 
         try {
             const response = await axios.post(
                 "http://businessboosters.club/public/api/createContact",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
+                formPayload,
+                { headers: { "Content-Type": "multipart/form-data" } }
             );
 
             if (response.status === 200) {
                 alert("Form submitted successfully!");
-                setName("");
-                setEmail("");
-                setPhone("");
-                setMessage("");
+                setFormData({ person_name: "", email: "", phone: "", message: "" });
             } else {
-                setError("Failed to submit the form. Please try again.");
+                setErrors({ form: "Failed to submit the form. Please try again." });
             }
         } catch (error) {
-            console.error("Error submitting form:", error);
-            setError("An error occurred. Please try again later.");
+            setErrors({ form: "An error occurred. Please try again later." });
         } finally {
             setLoading(false);
         }
@@ -62,7 +76,6 @@ export function Contact() {
 
     return (
         <>
-            {/* Hero Section */}
             <section className="relative block h-[40vh] bg-white">
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
                     <Typography variant="h1" color="gray" className="text-center font-bold text-5xl mb-4">
@@ -74,11 +87,8 @@ export function Contact() {
                 </div>
             </section>
 
-            {/* Main Content */}
             <div className="container mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Contact Information Cards (Left Side) */}
                 <div className="space-y-8">
-                    {/* Address Card */}
                     <Card className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 hover:shadow-2xl transition-shadow duration-300">
                         <div className="flex items-center space-x-4">
                             <div className="p-4 bg-blue-500 rounded-full">
@@ -132,88 +142,75 @@ export function Contact() {
                     </Card>
                 </div>
 
-                {/* Contact Form (Right Side) */}
-                <Card className="p-8 bg-gradient-to-r from-indigo-50 to-indigo-100 border border-indigo-200 hover:shadow-2xl transition-shadow duration-300">
-                    <Typography variant="h4" className="font-bold text-center mb-8 text-indigo-900">
+                <Card className="p-8 bg-gradient-to-r  border border-[#A41460]  hover:shadow-2xl transition-shadow duration-300">
+                    <Typography variant="h4" className="font-bold text-center mb-8 text-[#A41460]">
                         Send Us a Message
                     </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <div className="space-y-6">
-                            {/* Name Field */}
-                           
-                            <div>
-                                <FormLabel required>Full Name</FormLabel>
-                                <input
-                                  
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            {/* Email Field */}
-                           
-<div>
-                                <FormLabel required>Email</FormLabel>
-                                <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-                            {/* Phone Field */}
-                           
- <div>
-                                <FormLabel required>Phone Number</FormLabel>
-                                <input
-                                     type="tel"
-                                     maxLength={10}
-                                     value={phone}
-                                     onChange={(e) => setPhone(e.target.value)}
-                                     required
-                                     className={inputClass}
-                                     onKeyPress={(e) => {
-                                         if (!/[0-9.]/.test(e.key) && e.key !== "Backspace") {
-                                           e.preventDefault();
-                                         }
-                                       }}
-                                />
-                            </div>
-                            {/* Message Field */}
-                            
-                             <div>
-                                <FormLabel>Message</FormLabel>
-                                <textarea
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    
-                                    className={inputClass}
-                                    rows="4"
-                                />
-                            </div>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <Input
+                                variant="static"
+                                label={<span className="text-[#A41460]"> Full Name *</span>}
+                                placeholder="Enter your full name"
+                                name="person_name"
+                                value={formData.person_name}
+                                onChange={handleInputChange}
+                                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_name ? "placeholder-red-500" : ""}`}
+                            />
                         </div>
 
-                        {/* Submit Button */}
+                        <div>
+                            <Input
+                                variant="static"
+                                label={<span className="text-[#A41460]"> Email *</span>}
+                                placeholder="Enter your email"
+                                name="email"
+                                type="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.email ? "placeholder-red-500" : ""}`}
+                            />
+                        </div>
+
+                        <div>
+                            <Input
+                                variant="static"
+                                label={<span className="text-[#A41460] "> Phone Number *</span>}
+                                placeholder="Enter your phone number"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleInputChange}
+                                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.phone ? "placeholder-red-500" : ""}`}
+                                maxLength={10}
+
+                            />
+                        </div>
+
+                        <div>
+                            <Textarea
+                                variant="static"
+                                label={<span className="text-[#A41460] "> Message</span>}
+                                placeholder="Enter your message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                className="bg-gray-100 text-gray-700 placeholder-gray-400"
+                                rows="2"
+                            />
+                        </div>
+
+                        {errors.form && <Typography color="red" className="text-center">{errors.form}</Typography>}
+
                         <div className="mt-8 flex justify-center">
                             <Button
                                 type="submit"
                                 color="indigo"
                                 disabled={loading}
-                                className="w-full sm:w-auto px-8 py-3 bg-indigo-500 hover:bg-indigo-600 transition-colors duration-300"
+                                className="w-full sm:w-auto px-8 py-3 bg-[#A41460] hover:bg-[#802053] transition-colors duration-300"
                             >
                                 {loading ? "Submitting..." : "Submit Now"}
                             </Button>
                         </div>
-
-                        {/* Error Message */}
-                        {error && (
-                            <Typography variant="small" color="red" className="mt-4 text-center">
-                                {error}
-                            </Typography>
-                        )}
                     </form>
                 </Card>
             </div>

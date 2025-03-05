@@ -14,6 +14,7 @@ import { realStoriesData } from "@/data/stories-data";
 import TeamSliderPartner from "@/widgets/cards/team-card-partner";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Floating from "./floating";
 
 export function Home() {
   const [teamData, setTeamData] = useState([]);
@@ -130,7 +131,7 @@ export function Home() {
                   />
                 </CardBody>
               </Card>
-              
+            
             </div>
           </div>
         </div>
@@ -180,7 +181,7 @@ we believe in <span className="text-black font-bold">“SABKA SATH SABKA VISHWAS
               </Card>
             ))}
           </div>
-
+<Floating/>
  {/* New Follow Us Section */}
     <PageTitle section="" heading="Follow Us">
       This is group which believes in fair and honest business, to not only help customers but develop personal relationship. Thus growing in every field.
