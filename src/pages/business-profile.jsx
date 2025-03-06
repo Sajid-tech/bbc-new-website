@@ -166,9 +166,9 @@ const BusinessProfile = () => {
     };
 
     if (loading) return (
-        <div className="fixed inset-0 flex justify-center items-center bg-gradient-to-br from-indigo-50 to-blue-100 z-50">
+        <div className="fixed inset-0 flex justify-center items-center bg-gradient-to-br from-indigo-50 to-pink-100 z-50">
             <div className="text-center">
-                <div className="animate-spin inline-block w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full" role="status">
+                <div className="animate-spin inline-block w-12 h-12 border-4 border-pink-600 border-t-transparent rounded-full" role="status">
                     <span className="sr-only">Loading...</span>
                 </div>
                 <p className="mt-4 text-indigo-800 font-medium">Loading profile...</p>
@@ -464,7 +464,7 @@ const BusinessProfile = () => {
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                                                     <div className="p-6 text-white">
-                                                        <h3 className="text-xl font-bold">Project {index + 1}</h3>
+                                                        <h3 className="text-xl font-bold">Photo {index + 1}</h3>
                                                         <p className="text-sm opacity-80">Click to view full image</p>
                                                     </div>
                                                 </div>
