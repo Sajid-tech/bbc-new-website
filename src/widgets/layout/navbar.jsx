@@ -214,7 +214,7 @@ export function Navbar({ routes, action }) {
                 onClick={() => setOpenNav(!openNav)}
               >
                 {openNav ? (
-                  <XMarkIcon strokeWidth={2} className="h-5 w-5 text-white" />
+                  <XMarkIcon strokeWidth={2} className="h-5 w-5 text-black" />
                 ) : (
                   <Bars3Icon strokeWidth={2} className="h-5 w-5" />
                 )}
