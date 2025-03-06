@@ -30,7 +30,7 @@ export function Footer({ title, description, socials, menus, copyright }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <IconButton color="white" className="rounded-full shadow-none bg-transparent">
+                  <IconButton color="white" className="rounded-full shadow-none bg-transparent" >
                     <Typography color={color}>
                       <i className={`fa-brands fa-${name}`} />
                     </Typography>

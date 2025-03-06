@@ -2,11 +2,130 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Footer } from "@/widgets/layout";
 import { Button, Card, Input, Option, Select, Textarea } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 export function Register() {
   const [errors, setErrors] = useState({});
+const navigate=useNavigate()
+  const [register, setRegisterData] = useState({
+    name: "",
+    gender: "",
+    email: "",
+    mobile: "",
+    whatsapp_number: "",
+    dob: "",
+    spouse_name: "",
+    company_short: "",
+    company: "",
+    doa: "",
+    business_category: "",
+    experience: "",
+    website: "",
+    address: "",
+    area: "",
+    products: "",
+    landline: "",
+    product_tag: "",
+  });
 
-  const [formData, setFormData] = useState({
+  const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleValidation = () => {
+    let newErrors = {};
+
+    if (!register.name) newErrors.name = "Full name is required";
+
+    if (!register.gender) newErrors.gender = "Gender is required";
+    if (!register.email) newErrors.email = "Email is required";
+    if (!register.mobile) newErrors.mobile = "Mobile is required";
+    if (!register.whatsapp_number) newErrors.whatsapp_number = "Mobile is required";
+
+    if (!register.dob)
+      newErrors.dob = "Date of Birth is required";
+
+    if (!register.business_category)
+      newErrors.business_category = "Company name is required";
+
+    if (!register.address)
+      newErrors.address = "addressis required";
+    if (!register.company)
+      newErrors.company = "company required";
+    if (!register.area)
+      newErrors.area = "area is  required";
+
+    if (!register.products)
+      newErrors.products = "Products/Services details are required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; 
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    console.log(value,"name")
+    if (name === "mobile" || name === "whatsapp_number" || name === "landline") {
+        if (!/^\d*$/.test(value)) return;
+      }
+    setRegisterData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!handleValidation()) return;
+
+  const formData = new FormData();
+  console.log("Selected Image:", selectedImage?.name);
+
+  // Append form fields to FormData
+  Object.entries(register).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+
+  formData.append("image", selectedImage);
+
+  // Debugging: Log formData entries
+  for (let [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await axios.post(
+      "http://businessboosters.club/public/api/createUser",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
+
+    if (response.data.code === 200) {
+      navigate("/thankyou");
+      resetForm();
+    } else {
+      navigate("/failure");
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    navigate("/failure");
+  } finally {
+    setLoading(false);
+  }
+};
+
+// Reset form data after successful submission
+const resetForm = () => {
+  setRegisterData({
     name: "",
     gender: "",
     email: "",
@@ -27,101 +146,7 @@ export function Register() {
     landline: "",
     product_tag: "",
   });
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const handleValidation = () => {
-    let newErrors = {};
-
-    if (!formData.name) newErrors.name = "Full name is required";
-
-    if (!formData.gender) newErrors.gender = "Gender is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.mobile) newErrors.mobile = "Mobile is required";
-    if (!formData.whatsapp_number) newErrors.whatsapp_number = "Mobile is required";
-    if (!formData.image)
-      newErrors.image = "Image is required";
-    if (!formData.dob)
-      newErrors.dob = "Date of Birth is required";
-
-    if (!formData.business_category)
-      newErrors.business_category = "Company name is required";
-
-    if (!formData.address)
-      newErrors.address = "addressis required";
-    if (!formData.company)
-      newErrors.company = "company required";
-    if (!formData.area)
-      newErrors.area = "area is  required";
-
-    if (!formData.products)
-      newErrors.products = "Products/Services details are required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; 
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-    console.log(value,"name")
-    if (name === "mobile" || name === "whatsapp_number" || name === "landline") {
-        if (!/^\d*$/.test(value)) return;
-      }
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!handleValidation()) return;
-
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        "http://businessboosters.club/public/api/createUser",
-        formData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (response.status === 200) {
-        navigate("/thankyou");
-        setFormData({
-            name: "",
-            gender: "",
-            email: "",
-            mobile: "",
-            whatsapp_number: "",
-            image: null,
-            dob: "",
-            spouse_name: "",
-            company_short: "",
-            company: "",
-            doa: "",
-            business_category: "",
-            experience: "",
-            website: "",
-            address: "",
-            area: "",
-            products: "",
-            landline: "",
-            product_tag: "",
-          });
-      } else {
-        navigate("/failure");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      navigate("/failure");
-    } finally {
-      setLoading(false);
-    }
-  };
+};
 
   return (
     <>
@@ -144,7 +169,7 @@ export function Register() {
             Complete Your Registration
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" enctype="multipart/form-data">
             {/* Personal Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
               <Input
@@ -157,7 +182,7 @@ export function Register() {
                 }
                 placeholder="Enter your full name"
                 name="name"
-                value={formData.name}
+                value={register.name}
                 onChange={handleInputChange}
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.name ? "placeholder-red-500" : ""
@@ -173,7 +198,7 @@ export function Register() {
                     </>
                   }
                   onChange={(value) =>
-                    setFormData({ ...formData, gender: value })
+                    setRegisterData({ ...register, gender: value })
                   }
                   className={`${errors.gender ? "border-red-500" : ""}`}
                 >
@@ -193,7 +218,7 @@ export function Register() {
                   }
                   placeholder="Enter your Email"
                   name="email"
-                  value={formData.email}
+                  value={register.email}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.email ? "placeholder-red-500 border-red-500" : ""
@@ -211,7 +236,7 @@ export function Register() {
                   }
                   placeholder="Enter your  Mobile Number"
                   name="mobile"
-                  value={formData.mobile}
+                  value={register.mobile}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.mobile ? "placeholder-red-500 border-red-500" : ""
@@ -231,7 +256,7 @@ export function Register() {
                   }
                   placeholder="Enter your WhatsApp Number"
                   name="whatsapp_number"
-                  value={formData.whatsapp_number}
+                  value={register.whatsapp_number}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.whatsapp_number
@@ -253,7 +278,7 @@ export function Register() {
                   }
                   placeholder="Enter your Date of Birth"
                   name="dob"
-                  value={formData.dob}
+                  value={register.dob}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.dob ? "placeholder-red-500 border-red-500" : ""
@@ -271,7 +296,7 @@ export function Register() {
                   }
                   placeholder="Enter your Spouse Name"
                   name="spouse_name"
-                  value={formData.spouse_name}
+                  value={register.spouse_name}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.spouse_name
@@ -292,7 +317,7 @@ export function Register() {
                   }
                   placeholder="Enter your Anniversary Date"
                   name="doa"
-                  value={formData.doa}
+                  value={register.doa}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400`}
                   // required
@@ -304,18 +329,13 @@ export function Register() {
               <Input
   variant="static"
   type="file"
-  label={
-    <>
-      <span className="text-[#A41460] ml-1"> Profile Image </span>
-    </>
-  }
-  accept="image/*"
-  placeholder="Enter your Area"
-  name="image"
-  onChange={handleInputChange} // Remove value, use only onChange
-  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-    errors.image ? "placeholder-red-500 border-red-500" : ""
-  }`}
+  label={<span className="text-[#A41460] ml-1"> Profile Image </span>}
+  id="selectedImage"
+
+  name="selectedImage"
+  onChange={(e)=>{setSelectedImage(e.target.files[0])}}
+
+  className="bg-gray-100 text-gray-700 placeholder-gray-400"
 />
 
               </div>
@@ -333,7 +353,7 @@ export function Register() {
                   }
                   placeholder="Enter your Company Name"
                   name="company"
-                  value={formData.company}
+                  value={register.company}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.company ? "placeholder-red-500 border-red-500" : ""
@@ -354,7 +374,7 @@ export function Register() {
                   }
                   placeholder="Enter your Business Category"
                   name="business_category"
-                  value={formData.business_category}
+                  value={register.business_category}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.business_category
@@ -375,7 +395,7 @@ export function Register() {
                   }
                   placeholder="Enter your Experience"
                   name="experience"
-                  value={formData.experience}
+                  value={register.experience}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.experience
@@ -395,7 +415,7 @@ export function Register() {
                   }
                   placeholder="Enter your Website"
                   name="website"
-                  value={formData.website}
+                  value={register.website}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.website ? "placeholder-red-500 border-red-500" : ""
@@ -417,7 +437,7 @@ export function Register() {
                   }
                   placeholder="Enter your Landline Number"
                   name="landline"
-                  value={formData.landline}
+                  value={register.landline}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.landline ? "placeholder-red-500 border-red-500" : ""
@@ -434,7 +454,7 @@ export function Register() {
                   }
                   placeholder="Enter your Address"
                   name="address"
-                  value={formData.address}
+                  value={register.address}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.address ? "placeholder-red-500 border-red-500" : ""
@@ -451,7 +471,7 @@ export function Register() {
                   }
                   placeholder="Enter your Area"
                   name="area"
-                  value={formData.area}
+                  value={register.area}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.area ? "placeholder-red-500 border-red-500" : ""
@@ -474,7 +494,7 @@ export function Register() {
                   }
                   placeholder="Type all Products or Services separated by comma"
                   name="products"
-                  value={formData.products}
+                  value={register.products}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.products ? "placeholder-red-500 border-red-500" : ""
@@ -492,7 +512,7 @@ export function Register() {
                   }
                   placeholder="Type all Products or Services related Tags Separated by comma (e.g., CCTV - Security System, Camera, Surveillance)"
                   name="product_tag"
-                  value={formData.product_tag}
+                  value={register.product_tag}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.product_tag
