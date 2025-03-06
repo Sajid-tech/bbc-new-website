@@ -1,8 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import gif from "../../public/img/event.gif";
 
 const Floating = () => {
+  const { pathname } = useLocation();
+
+  if (pathname === "/interest" || pathname.startsWith("/business-profile/")) {
+    return null;
+  }
+
   return (
     <div className="fixed bottom-10 left-8 z-[99]">
       <Link to="/interest">
@@ -17,4 +23,3 @@ const Floating = () => {
 };
 
 export default Floating;
- 

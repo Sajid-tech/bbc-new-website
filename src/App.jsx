@@ -9,16 +9,18 @@ import Interest from "./pages/interest";
 import ThankYou from "./pages/thankyou";
 import Failure from "./pages/failure";
 import BusinessProfile from "./pages/business-profile";
+import Floating from "./pages/floating";
 
 function App() {
   const { pathname } = useLocation();
   const isBusinessProfile = pathname.startsWith("/business-profile/");
+  
   return (
     <>
-      {!(pathname === '/sign-in' || pathname === '/sign-up'|| isBusinessProfile ) && (
+      {!( isBusinessProfile ) && (
         <Navbar routes={routes} />
       )}
-      
+      <Floating />
       <Routes>
         {routes.map(
           ({ path, element }, key) =>
@@ -36,3 +38,5 @@ function App() {
 }
 
 export default App;
+
+

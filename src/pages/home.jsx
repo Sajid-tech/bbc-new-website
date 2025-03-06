@@ -14,7 +14,6 @@ import { realStoriesData } from "@/data/stories-data";
 import TeamSliderPartner from "@/widgets/cards/team-card-partner";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Floating from "./floating";
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from "framer-motion";
 
 // Animated components
@@ -350,7 +349,7 @@ export function Home() {
             ))}
           </motion.div>
           
-          <Floating />
+      
           
           {/* Follow Us Section */}
           <AnimatedText>
@@ -370,7 +369,7 @@ export function Home() {
               <AnimatedCard delay={0.1}>
                 <motion.div
                   className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-                  onClick={() => window.open("https://www.youtube.com", "_blank")}
+                  onClick={() => window.open("https://www.youtube.com/@BusinessboostersclubBangalore", "_blank")}
                   whileHover={{ 
                     scale: 1.03,
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
@@ -399,7 +398,7 @@ export function Home() {
               <AnimatedCard delay={0.2}>
                 <motion.div
                   className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-                  onClick={() => window.open("https://www.facebook.com", "_blank")}
+                  onClick={() => window.open("https://www.facebook.com/businessboosterclub2018/", "_blank")}
                   whileHover={{ 
                     scale: 1.03,
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
@@ -429,7 +428,7 @@ export function Home() {
             <AnimatedCard delay={0.3}>
               <motion.div
                 className="bg-white flex flex-col lg:flex-row item-center gap-2 shadow-lg rounded-lg p-6 mt-6 hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-                onClick={() => window.open("https://play.google.com/store", "_blank")}
+                onClick={() => window.open("https://play.google.com/store/apps/details?id=com.bbc.agsolutions&pcampaignid=web_share", "_blank")}
                 whileHover={{ 
                   scale: 1.02,
                   boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",

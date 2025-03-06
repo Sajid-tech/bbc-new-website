@@ -115,23 +115,24 @@ Footer.defaultProps = {
   socials: [
     {
       color: "gray",
-      name: "twitter",
-      path: "https://www.twitter.com/businessboosters",
+      name: "",
+      path: "#",
     },
     {
       color: "gray",
       name: "youtube",
-      path: "https://www.youtube.com/businessboosters",
+      path: "https://www.youtube.com/@BusinessboostersclubBangalore",
+    },
+   
+    {
+      color: "black",
+      name: "google-play",
+      path: "https://play.google.com/store/apps/details?id=com.bbc.agsolutions&pcampaignid=web_share",
     },
     {
       color: "gray",
-      name: "instagram",
-      path: "https://www.instagram.com/businessboosters",
-    },
-    {
-      color: "black",
-      name: "github",
-      path: "https://github.com/businessboosters",
+      name: "facebook",
+      path: "https://www.facebook.com/businessboosterclub2018/",
     },
   ],
   menus: [
