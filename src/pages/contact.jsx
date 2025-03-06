@@ -78,7 +78,7 @@ export function Contact() {
         <>
             <section className="relative block h-[40vh] bg-white">
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
-                    <Typography variant="h1" color="gray" className="text-center font-bold text-5xl mb-4">
+                    <Typography variant="h1" color="gray" className="text-center font-bold text-4xl mb-4">
                         Contact Us
                     </Typography>
                     <Typography variant="lead" color="gray" className="text-xl text-center font-light max-w-2xl">
@@ -104,23 +104,22 @@ export function Contact() {
                             </div>
                         </div>
                     </Card>
-
-                    {/* Email Card */}
+{/* Email  */}
                     <Card className="p-8 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 hover:shadow-2xl transition-shadow duration-300">
-                        <div className="flex items-center space-x-4">
-                            <div className="p-4 bg-purple-500 rounded-full">
-                                <EnvelopeIcon className="w-8 h-8 text-white" />
-                            </div>
-                            <div>
-                                <Typography variant="h5" className="font-bold text-purple-900">
-                                    Mail Us
-                                </Typography>
-                                <Typography variant="paragraph" className="text-purple-800">
-                                    businessboostersclub@gmail.com
-                                </Typography>
-                            </div>
-                        </div>
-                    </Card>
+    <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4">
+        <div className="p-4 bg-purple-500 rounded-full">
+            <EnvelopeIcon className="w-8 h-8 text-white" />
+        </div>
+        <div className="text-center sm:text-left">
+            <Typography variant="h5" className="font-bold text-purple-900">
+                Mail Us
+            </Typography>
+            <Typography variant="paragraph" className="text-purple-800 break-words">
+                businessboostersclub@gmail.com
+            </Typography>
+        </div>
+    </div>
+</Card>
 
                     {/* Phone Card */}
                     <Card className="p-8 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 hover:shadow-2xl transition-shadow duration-300">
