@@ -1,421 +1,255 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { Footer } from "@/widgets/layout";
 
-// Custom Form Label Component
-const FormLabel = ({ children, required }) => (
-  <label className="block text-sm font-semibold text-black mb-1">
-    {children}
-    {required && <span className="text-red-500 ml-1">*</span>}
-  </label>
-);
 
-// Input Class Definitions
-const inputClass = "w-full px-3 py-2.5 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 border-blue-500";
-const inputClassSelect = "w-full px-3 py-2.5 text-xs border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 border-blue-500";
 
-export function Register() {
-    const [formData, setFormData] = useState({
-        name: "",
-        gender: "",
-        email: "",
-        mobilenumber: "",
-        whatsapp: "",
-        profileimage: null,
-        dateofbirth: "",
-        spouse: "",
-        company: "",
-        anniversary: "",
-        business: "",
-        experience: "",
-        website: "",
-        address: "",
-        area: "",
-        products: "",
-        landline: "",
-        producttag: ""
-    });
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
 
-    const genders = [
-        { value: "MALE", label: "Male" },
-        { value: "FEMALE", label: "Female" }
-    ];
 
-    const handleInputChange = (e) => {
-        const { name, value, files } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: files ? files[0] : value
-        }));
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import {
+  Navbar as MTNavbar,
+  Typography,
+  Button,
+  IconButton,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Collapse,
+} from "@material-tailwind/react";
+import { Bars3Icon, XMarkIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+
+export function Navbar({ routes, action }) {
+  const [openNav, setOpenNav] = React.useState(false);
+  const [openMenu, setOpenMenu] = React.useState(false);
+  const { scrollY } = useScroll();
+  const navRef = useRef(null);
+  
+  const width = useTransform(scrollY, [0, 100], ["100%", "100%"]);
+  const left = useTransform(scrollY, [0, 100], ["50%", "0%"]);
+  const translateX = useTransform(scrollY, [0, 100], ["-50%", "0%"]);
+  const navbarHeight = useTransform(scrollY, [0, 100], ["4.5rem", "4rem"]);
+  const backgroundColor = useTransform(
+    scrollY,
+    [0, 100],
+    ["rgba(255, 255, 255, 0.7)", "rgba(255, 255, 255, 0.95)"]
+  );
+  const boxShadow = useTransform(
+    scrollY, 
+    [0, 100], 
+    ["0 4px 12px rgba(0,0,0,0.05)", "0 2px 8px rgba(0,0,0,0.1)"]
+  );
+  const borderRadius = useTransform(scrollY, [0, 100], ["0rem", "0rem"]);
+  
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target) && openNav) {
+        setOpenNav(false);
+      }
+    };
+    
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape' && openNav) {
+        setOpenNav(false);
+      }
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        setError("");
-
-        const formDataToSubmit = new FormData();
-        Object.keys(formData).forEach(key => {
-            formDataToSubmit.append(
-                key === 'profileimage' ? 'image' : 
-                key === 'mobilenumber' ? 'mobile' : 
-                key === 'whatsapp' ? 'whatsapp_number' : 
-                key === 'dateofbirth' ? 'dob' : 
-                key === 'spouse' ? 'spouse_name' : 
-                key === 'anniversary' ? 'doa' : 
-                key === 'business' ? 'business_category' : 
-                key === 'producttag' ? 'product_tag' : 
-                key,
-                formData[key]
-            );
-        });
-
-        try {
-            const response = await axios.post(
-                "http://businessboosters.club/public/api/createUser",
-                formDataToSubmit,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-
-            if (response.status === 200) {
-                alert("Registration successful!");
-                // Reset form
-                setFormData({
-                    name: "",
-                    gender: "",
-                    email: "",
-                    mobilenumber: "",
-                    whatsapp: "",
-                    profileimage: null,
-                    dateofbirth: "",
-                    spouse: "",
-                    company: "",
-                    anniversary: "",
-                    business: "",
-                    experience: "",
-                    website: "",
-                    address: "",
-                    area: "",
-                    products: "",
-                    landline: "",
-                    producttag: ""
-                });
-            } else {
-                setError("Failed to submit the form. Please try again.");
-            }
-        } catch (error) {
-            console.error("Error submitting form:", error);
-            setError("An error occurred. Please try again later.");
-        } finally {
-            setLoading(false);
-        }
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscKey);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscKey);
     };
+  }, [openNav]);
 
-    return (
-        <>
-            {/* Hero Section */}
-            <section className="relative block h-[40vh] bg-white">
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
-                    <h1 className="text-center font-bold text-5xl mb-4 text-gray-800">
-                        Business Registration
-                    </h1>
-                    <p className="text-xl text-center font-light max-w-2xl text-gray-700">
-                        Join our network and expand your business opportunities!
-                    </p>
-                </div>
-            </section>
+  // Close on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 960) {
+        setOpenNav(false);
+      }
+    };
+    
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
-            {/* Main Content */}
-            <div className="container mx-auto px-4 py-12">
-                <div className="p-8 bg-gradient-to-r from-indigo-50 to-indigo-100 border border-indigo-200 hover:shadow-2xl transition-shadow duration-300 rounded-lg">
-                    <h2 className="font-bold text-center mb-8 text-indigo-900 text-2xl">
-                        Complete Your Registration
-                    </h2>
-                    
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Personal Information */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div>
-                                <FormLabel required>Full Name</FormLabel>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-                            
-                            <div>
-                                <FormLabel required>Gender</FormLabel>
-                                <select
-                                    name="gender"
-                                    value={formData.gender}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClassSelect}
-                                >
-                                    <option value="">Select Gender</option>
-                                    {genders.map((g) => (
-                                        <option key={g.value} value={g.value}>
-                                            {g.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+  const navList = (
+    <ul className="mb-0 mt-0 flex flex-col gap-1 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+      {routes.map(({ name, path, icon, href, target }) => (
+        <Typography
+          key={name}
+          as="li"
+          variant="small"
+          color="black"
+          className="capitalize p-0"
+        >
+          {href ? (
+            <a
+              href={href}
+              target={target}
+              className="flex items-center gap-1 py-1 px-2 font-medium text-md hover:bg-black/5 rounded transition-colors"
+              onClick={() => setOpenNav(false)}
+            >
+              {icon &&
+                React.createElement(icon, {
+                  className: "w-4 h-4 opacity-75 mr-1",
+                })}
+              {name}
+            </a>
+          ) : (
+            <Link
+              to={path}
+              target={target}
+              className="flex items-center gap-1 py-1 px-2 font-medium text-md hover:bg-black/5 rounded transition-colors"
+              onClick={() => setOpenNav(false)}
+            >
+              {icon &&
+                React.createElement(icon, {
+                  className: "w-4 h-4 opacity-75 mr-1",
+                })}
+              {name}
+            </Link>
+          )}
+        </Typography>
+      ))}
+    </ul>
+  );
 
-                            <div>
-                                <FormLabel required>Email</FormLabel>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-                            <div>
-                                <FormLabel required>Mobile Number</FormLabel>
-                                <input
-                                    type="tel"
-                                    name="mobilenumber"
-                                    value={formData.mobilenumber}
-                                    onChange={handleInputChange}
-                                    maxLength={10}
-                                    required
-                                    className={inputClass}
-                                    onKeyPress={(e) => {
-                                        if (!/[0-9.]/.test(e.key) && e.key !== "Backspace") {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                />
-                            </div>
-
-                        </div>
-
-                       
-
-                        {/* Personal Details */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div>
-                                <FormLabel required>WhatsApp Number</FormLabel>
-                                <input
-                                    type="tel"
-                                    name="whatsapp"
-                                    value={formData.whatsapp}
-                                    onChange={handleInputChange}
-                                    maxLength={10}
-                                    required
-                                    className={inputClass}
-                                    onKeyPress={(e) => {
-                                        if (!/[0-9.]/.test(e.key) && e.key !== "Backspace") {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                />
-                            </div>
-                            <div>
-                                <FormLabel required>Date of Birth</FormLabel>
-                                <input
-                                    type="date"
-                                    name="dateofbirth"
-                                    value={formData.dateofbirth}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel>Spouse Name</FormLabel>
-                                <input
-                                    type="text"
-                                    name="spouse"
-                                    value={formData.spouse}
-                                    onChange={handleInputChange}
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel>Anniversary Date</FormLabel>
-                                <input
-                                    type="date"
-                                    name="anniversary"
-                                    value={formData.anniversary}
-                                    onChange={handleInputChange}
-                                    className={inputClass}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Business Information */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div>
-                                <FormLabel required>Company Name</FormLabel>
-                                <input
-                                    type="text"
-                                    name="company"
-                                    value={formData.company}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel required>Business Category</FormLabel>
-                                <input
-                                    type="text"
-                                    name="business"
-                                    value={formData.business}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel>Experience</FormLabel>
-                                <input
-                                    type="text"
-                                    name="experience"
-                                    value={formData.experience}
-                                    onChange={handleInputChange}
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel>Website</FormLabel>
-                                <input
-                                    type="text"
-                                    name="website"
-                                    value={formData.website}
-                                    onChange={handleInputChange}
-                                    className={inputClass}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Additional Details */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div>
-                                <FormLabel>Landline Number</FormLabel>
-                                <input
-                                    type="tel"
-                                    name="landline"
-                                    value={formData.landline}
-                                    onChange={handleInputChange}
-                                    className={inputClass}
-                                    onKeyPress={(e) => {
-                                        if (!/[0-9.]/.test(e.key) && e.key !== "Backspace") {
-                                          e.preventDefault();
-                                        }
-                                      }}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel required>Address</FormLabel>
-                                <input
-                                    type="text"
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-
-                            <div>
-                                <FormLabel required>Area</FormLabel>
-                                <input
-                                    type="text"
-                                    name="area"
-                                    value={formData.area}
-                                    onChange={handleInputChange}
-                                    required
-                                    className={inputClass}
-                                />
-                            </div>
-                            <div>
-                                <FormLabel>Profile Image</FormLabel>
-                                <input
-                                    type="file"
-                                    name="profileimage"
-                                    onChange={handleInputChange}
-                                    className={inputClass}
-                                />
-                            </div>
-                        </div>
-
-                        {/* Products and Tags */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <FormLabel required>Products/Services</FormLabel>
-                                <textarea
-                                    name="products"
-                                    value={formData.products}
-                                    onChange={handleInputChange}
-                                    required
-                                    placeholder="Type all Products or Services separated by comma"
-                                    className={inputClass}
-                                    rows="4"
-                                />
-                            </div>
-                            <div>
-                                <FormLabel>Product Tags</FormLabel>
-                                <textarea
-                                    name="producttag"
-                                    value={formData.producttag}
-                                    onChange={handleInputChange}
-                                    placeholder="Type all Products or Services related Tags Separated by comma (e.g., CCTV - Security System, Camera, Surveillance)"
-                                    className={inputClass}
-                                    rows="4"
-                                />
-                            </div>
-                        </div>
-
-                      
-
-                        {/* Submit Button */}
-                        <div className="flex justify-center mt-8">
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full sm:w-auto px-8 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors duration-300"
-                            >
-                                {loading ? "Submitting..." : "Register Now"}
-                            </button>
-                        </div>
-
-                        {/* Error Message */}
-                        {error && (
-                            <p className="mt-4 text-center text-red-500 text-sm">
-                                {error}
-                            </p>
-                        )}
-                    </form>
-                </div>
+  return (
+    <motion.div
+      className="fixed top-0 z-50"
+      style={{
+        width,
+        left,
+        translateX,
+      }}
+      ref={navRef}
+    >
+      <motion.div
+        style={{
+          backgroundColor,
+          borderRadius,
+          boxShadow,
+          height: navbarHeight,
+        }}
+        className="transition-all duration-300 ease-in-out backdrop-blur-sm"
+      >
+        <div className="px-3 h-full">
+          <div className="container mx-auto flex items-center justify-between h-full">
+            <Link to="/">
+              <div className="flex items-center py-1 px-2">
+                <img 
+                  src="https://businessboosters.club/static/media/logo.b092c9f492105e973cc3.png" 
+                  alt="Business Boosters Logo" 
+                  className="h-10 w-auto"
+                />
+              </div>
+            </Link>
+            <div className="hidden lg:block">{navList}</div>
+            <div className="hidden gap-1 lg:flex items-center">
+              <Link to='/register'>
+                <Button variant="text" className="py-1.5 px-3 text-sm text-[#A51B64]">
+                  Join Us
+                </Button>
+              </Link>
+              <a
+                href="https://login.businessboosters.club/login"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Button variant="text" className="py-1.5 px-3 text-sm text-[#A51B64]">
+                  Login
+                </Button>
+              </a>
             </div>
-
-            {/* Footer */}
-            <div className="bg-white mt-12">
-                <Footer />
-            </div>
-        </>
-    );
+            <IconButton
+              variant="text"
+              size="sm"
+              className="ml-auto lg:hidden h-8 w-8 flex items-center justify-center"
+              onClick={() => setOpenNav(!openNav)}
+            >
+              {openNav ? (
+                <XMarkIcon strokeWidth={2} className="h-5 w-5" />
+              ) : (
+                <Bars3Icon strokeWidth={2} className="h-5 w-5" />
+              )}
+            </IconButton>
+          </div>
+          
+          <AnimatePresence>
+            {openNav && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="lg:hidden"
+              >
+                <div className="rounded-b-lg bg-white/95 backdrop-blur-sm px-4 pt-3 pb-6 text-blue-gray-900 shadow-lg border border-gray-100">
+                  <div className="container mx-auto">
+                    <div className="mb-6 border-b border-gray-100 pb-4">
+                      <Typography variant="h5" className="font-bold text-[#A51B64] mb-2">
+                        Menu
+                      </Typography>
+                      {navList}
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link to='/register' className="col-span-1">
+                        <Button 
+                          variant="gradient" 
+                          size="md"
+                          fullWidth
+                          onClick={() => setOpenNav(!openNav)}
+                          className="py-2.5 text-white bg-gradient-to-r from-[#A51B64] to-[#CE267A] shadow-md"
+                        >
+                          Join Us
+                        </Button>
+                      </Link>
+                      <a
+                        href="https://login.businessboosters.club/login"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="col-span-1"
+                      >
+                        <Button 
+                          variant="outlined" 
+                          size="md"
+                          onClick={() => setOpenNav(!openNav)}
+                          fullWidth
+                          className="py-2.5 border-[#A51B64] text-[#A51B64]"
+                        >
+                          Login
+                        </Button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
 }
 
-export default Register;
+Navbar.defaultProps = {
+  routes: [],
+  action: null,
+};
+
+Navbar.propTypes = {
+  routes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  action: PropTypes.node,
+};
+
+Navbar.displayName = "/src/widgets/layout/navbar.jsx";
+
+export default Navbar;

@@ -19,9 +19,11 @@ import Floating from "./floating";
 export function Home() {
   const [teamData, setTeamData] = useState([]);
   const [error, setError] = useState(null);
+   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get("https://businessboosters.club/public/api/getUser");
         if (response.data && response.data.profile) {
@@ -37,6 +39,8 @@ export function Home() {
       } catch (error) {
         console.error("Error fetching user data:", error);
         setError("Failed to load user data.");
+      } finally {
+        setLoading(false);
       }
     };
   
@@ -134,8 +138,8 @@ export function Home() {
           </PageTitle>
           <div className="mt-24">
           {error && <div className="text-red-500">{error}</div>}
-      <TeamSlider teamData={teamData} />
-      <TeamSliderPartner teamData={teamData} />
+      <TeamSlider teamData={teamData} loading={loading} />
+      <TeamSliderPartner teamData={teamData} loading={loading} />
     </div>
         </div>
       </section>

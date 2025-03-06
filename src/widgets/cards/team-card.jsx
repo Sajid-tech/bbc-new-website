@@ -6,6 +6,18 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+
+export function SkeletonCard() {
+  return (
+    <Card color="transparent" shadow={false} className="text-center mx-2 animate-pulse">
+      <div 
+        className="h-[12rem] w-[7rem] bg-gray-300 rounded-2xl mx-auto"
+      />
+      <div className="mt-2 mb-1 h-4 bg-gray-300 rounded w-3/4 mx-auto"></div>
+    </Card>
+  );
+}
+
 export function TeamCard({ img, name, position, socials }) {
   return (
     <Card color="transparent" shadow={false} className="text-center mx-2  ">
@@ -41,7 +53,7 @@ TeamCard.propTypes = {
   socials: PropTypes.node,
 };
 
-export function TeamSlider({ teamData }) {
+export function TeamSlider({ teamData,loading }) {
   const sliderRef = useRef(null);
 
   const settings = {
@@ -69,21 +81,27 @@ export function TeamSlider({ teamData }) {
   const handleNext = () => {
     if (sliderRef.current) sliderRef.current.slickNext();
   };
-
+  const skeletonCards = Array(9).fill().map((_, index) => (
+    <div key={`skeleton-${index}`} className="px-2">
+      <SkeletonCard />
+    </div>
+  ));
   return (
     <div className="relative">
       {/* Slider */}
       <Slider ref={sliderRef} {...settings}>
-        {teamData.map(({ img, name, position }) => (
-          <div key={name} className="px-2">
-            <TeamCard
-              img={img}
-              name={name}
-              position={position}
-              
-            />
-          </div>
-        ))}
+        {loading ? 
+                  skeletonCards : 
+                  teamData.map(({ img, name, position }) => (
+                    <div key={name} className="px-2">
+                      <TeamCard
+                        img={img}
+                        name={name}
+                        position={position}
+                      />
+                    </div>
+                  ))
+                }
       </Slider>
 
       {/* Navigation Buttons (Modern Floating Glassmorphism Style) */}
