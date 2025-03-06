@@ -82,14 +82,12 @@ const handleSubmit = async (e) => {
   const formData = new FormData();
   console.log("Selected Image:", selectedImage?.name);
 
-  // Append form fields to FormData
   Object.entries(register).forEach(([key, value]) => {
     formData.append(key, value);
   });
 
   formData.append("image", selectedImage);
 
-  // Debugging: Log formData entries
   for (let [key, value] of formData.entries()) {
     console.log(key, value);
   }
@@ -123,7 +121,6 @@ const handleSubmit = async (e) => {
   }
 };
 
-// Reset form data after successful submission
 const resetForm = () => {
   setRegisterData({
     name: "",
@@ -151,7 +148,7 @@ const resetForm = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative block h-[40vh] bg-white">
+      <section className="relative block h-[40vh] bg-white mt-10 md:mt-0">
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
           <h1 className="text-center font-bold text-5xl mb-4 text-gray-800">
             Business Registration
@@ -169,17 +166,14 @@ const resetForm = () => {
             Complete Your Registration
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-6" enctype="multipart/form-data">
+          <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
             {/* Personal Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
               <Input
                 variant="static"
-                label={
-                  <>
-                    {" "}
-                    <span className="text-[#A41460] "> Full Name *</span>
-                  </>
-                }
+   
+                label="Full Name *"
+                labelProps={{ className: "!text-[#A41460]" }} 
                 placeholder="Enter your full name"
                 name="name"
                 value={register.name}
@@ -192,11 +186,9 @@ const resetForm = () => {
                 <Select
                   variant="static"
                   required
-                  label={
-                    <>
-                      <span className="text-[#A41460] "> Gender *</span>
-                    </>
-                  }
+      
+                  label="Gender *"
+                  labelProps={{ className: "!text-[#A41460]" }} 
                   onChange={(value) =>
                     setRegisterData({ ...register, gender: value })
                   }
@@ -211,11 +203,9 @@ const resetForm = () => {
                 <Input
                   variant="static"
                   type="email"
-                  label={
-                    <>
-                      <span className="text-[#A41460] "> Email *</span>
-                    </>
-                  }
+          
+                  label="Email *"
+                  labelProps={{ className: "!text-[#A41460]" }} 
                   placeholder="Enter your Email"
                   name="email"
                   value={register.email}
@@ -223,18 +213,16 @@ const resetForm = () => {
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.email ? "placeholder-red-500 border-red-500" : ""
                   }`}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] "> Mobile Number *</span>
-                    </>
-                  }
-                  placeholder="Enter your  Mobile Number"
+
+                  label="Mobile Number *"
+                  labelProps={{ className: "!text-[#A41460]" }}          
+                           placeholder="Enter your  Mobile Number"
                   name="mobile"
                   value={register.mobile}
                   onChange={handleInputChange}
@@ -242,18 +230,16 @@ const resetForm = () => {
                     errors.mobile ? "placeholder-red-500 border-red-500" : ""
                   }`}
                   maxLength={10}
-                  // required
+                  
                 />
               </div>
 
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460]"> WhatsApp Number*</span>
-                    </>
-                  }
+         
+                  label="WhatsApp Number *"
+                  labelProps={{ className: "!text-[#A41460]" }}      
                   placeholder="Enter your WhatsApp Number"
                   name="whatsapp_number"
                   value={register.whatsapp_number}
@@ -264,18 +250,16 @@ const resetForm = () => {
                       : ""
                   }`}
                   maxLength={10}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
                   type="date"
-                  label={
-                    <>
-                      <span className="text-[#A41460]"> Date of Birth*</span>
-                    </>
-                  }
+           
+                  label="Date of Birth *"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Date of Birth"
                   name="dob"
                   value={register.dob}
@@ -283,17 +267,15 @@ const resetForm = () => {
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.dob ? "placeholder-red-500 border-red-500" : ""
                   }`}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460]">Spouse Name</span>
-                    </>
-                  }
+             
+                  label="Spouse Name"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Spouse Name"
                   name="spouse_name"
                   value={register.spouse_name}
@@ -303,24 +285,22 @@ const resetForm = () => {
                       ? "placeholder-red-500 border-red-500"
                       : ""
                   }`}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
                   type="date"
-                  label={
-                    <>
-                      <span className="text-[#A41460]"> Anniversary Date</span>
-                    </>
-                  }
+         
+                  label="Anniversary Date"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Anniversary Date"
                   name="doa"
                   value={register.doa}
                   onChange={handleInputChange}
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400`}
-                  // required
+                  
                 />
               </div>
             
@@ -329,7 +309,8 @@ const resetForm = () => {
               <Input
   variant="static"
   type="file"
-  label={<span className="text-[#A41460] ml-1"> Profile Image </span>}
+  label="Profile Image "
+  labelProps={{ className: "!text-[#A41460]" }}   
   id="selectedImage"
 
   name="selectedImage"
@@ -346,11 +327,9 @@ const resetForm = () => {
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460]">Company Name *</span>
-                    </>
-                  }
+                
+                  label="Company Name *"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Company Name"
                   name="company"
                   value={register.company}
@@ -358,20 +337,15 @@ const resetForm = () => {
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.company ? "placeholder-red-500 border-red-500" : ""
                   }`}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1">
-                        {" "}
-                        Business Category *
-                      </span>
-                    </>
-                  }
+               
+                  label="Business Category *"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Business Category"
                   name="business_category"
                   value={register.business_category}
@@ -381,18 +355,16 @@ const resetForm = () => {
                       ? "placeholder-red-500 border-red-500"
                       : ""
                   }`}
-                  // required
+                  
                 />
               </div>
 
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1"> Experience </span>
-                    </>
-                  }
+                
+                  label="Experience"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Experience"
                   name="experience"
                   value={register.experience}
@@ -402,17 +374,15 @@ const resetForm = () => {
                       ? "placeholder-red-500 border-red-500"
                       : ""
                   }`}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1"> Website </span>
-                    </>
-                  }
+             
+                  label="Website"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Website"
                   name="website"
                   value={register.website}
@@ -420,21 +390,16 @@ const resetForm = () => {
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.website ? "placeholder-red-500 border-red-500" : ""
                   }`}
-                  // required
+                  
                 />
               </div>
 
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1">
-                        {" "}
-                        Landline Number{" "}
-                      </span>
-                    </>
-                  }
+             
+                  label="Landline Number"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Landline Number"
                   name="landline"
                   value={register.landline}
@@ -447,11 +412,9 @@ const resetForm = () => {
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1"> Address *</span>
-                    </>
-                  }
+              
+                  label="Address *"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Address"
                   name="address"
                   value={register.address}
@@ -464,11 +427,9 @@ const resetForm = () => {
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1"> Area *</span>
-                    </>
-                  }
+               
+                  label="Area *"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Enter your Area"
                   name="area"
                   value={register.area}
@@ -485,13 +446,9 @@ const resetForm = () => {
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1">
-                        Products/Services *
-                      </span>
-                    </>
-                  }
+          
+                  label="Products/Services *"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Type all Products or Services separated by comma"
                   name="products"
                   value={register.products}
@@ -499,17 +456,15 @@ const resetForm = () => {
                   className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                     errors.products ? "placeholder-red-500 border-red-500" : ""
                   }`}
-                  // required
+                  
                 />
               </div>
               <div>
                 <Input
                   variant="static"
-                  label={
-                    <>
-                      <span className="text-[#A41460] ml-1">Product Tags</span>
-                    </>
-                  }
+                
+                  label="Product Tags"
+                  labelProps={{ className: "!text-[#A41460]" }}   
                   placeholder="Type all Products or Services related Tags Separated by comma (e.g., CCTV - Security System, Camera, Surveillance)"
                   name="product_tag"
                   value={register.product_tag}
@@ -519,7 +474,7 @@ const resetForm = () => {
                       ? "placeholder-red-500 border-red-500"
                       : ""
                   }`}
-                  // required
+                  
                 />
               </div>
             </div>

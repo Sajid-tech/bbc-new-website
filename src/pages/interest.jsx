@@ -97,7 +97,7 @@ export function Interest() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative block h-[40vh] bg-white">
+      <section className="relative block h-[40vh] bg-white mt-10 md:mt-0">
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
           <h1 className="text-center font-bold text-5xl mb-4 text-gray-800">
             Want to Join BBC?
@@ -109,7 +109,7 @@ export function Interest() {
       </section>
 
       {/* Form Section */}
-      <Card className="p-8 bg-gradient-to-r mx-5 md:mx-36 px-8 py-10 border border-[#A41460]  hover:shadow-2xl transition-shadow duration-300">
+      <Card className="p-8 bg-gradient-to-r mx-5 mt-8 md:mx-36 px-8 py-10 border border-[#A41460]  hover:shadow-2xl transition-shadow duration-300">
         <h2 className="text-3xl font-semibold text-center text-[#A41460] mb-6">
           ✨ Join Us ✨
         </h2>
@@ -118,11 +118,10 @@ export function Interest() {
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Full Name *</span>
-                  </>
-                }
+            
+                label="Full Name *"
+                labelProps={{ className: "!text-[#A41460]" }} 
+
                 placeholder="Enter your full name"
                 name="person_name"
                 value={formData.person_name}
@@ -130,18 +129,14 @@ export function Interest() {
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.person_name ? "placeholder-red-500" : ""
                 }`}
-                // required
               />
             </div>
 
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Email *</span>
-                  </>
-                }
+                label="Email *"
+                labelProps={{ className: "!text-[#A41460]" }} 
                 type="email"
                 placeholder="Enter your email"
                 name="person_email"
@@ -150,21 +145,14 @@ export function Interest() {
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.person_email ? "placeholder-red-500" : ""
                 }`}
-                // required
-              />
+                              />
             </div>
 
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1">
-                      {" "}
-                      Mobile Number *
-                    </span>
-                  </>
-                }
+                label="Mobile Number *"
+                labelProps={{ className: "!text-[#A41460]" }} 
                 placeholder="Enter your mobile number"
                 name="person_mobile"
                 value={formData.person_mobile}
@@ -181,14 +169,8 @@ export function Interest() {
               <Select
                 variant="static"
                 required
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Occupation *</span>
-                  </>
-                }
-                onChange={(value) =>
-                  setFormData({ ...formData, person_occupation: value })
-                }
+                label="Occupation *"
+                labelProps={{ className: "text-[#A41460]" }} 
                 className={`${
                   errors.person_occupation ? "border-red-500" : ""
                 }`}
@@ -201,11 +183,8 @@ export function Interest() {
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Company *</span>
-                  </>
-                }
+                label="Company *"
+                labelProps={{ className: "!text-[#A41460]" }} 
                 placeholder="Enter your company"
                 name="person_company"
                 value={formData.person_company}
@@ -215,26 +194,22 @@ export function Interest() {
                     ? "placeholder-red-500 border-red-500"
                     : ""
                 }`}
-                // required
               />
             </div>
 
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Area *</span>
-                  </>
-                }
-                placeholder="Enter your area"
+
+                label="Area *"
+                labelProps={{ className: "!text-[#A41460]" }}         
+                        placeholder="Enter your area"
                 name="person_area"
                 value={formData.person_area}
                 onChange={handleInputChange}
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.person_area ? "placeholder-red-500" : ""
                 }`}
-                // required
               />
             </div>
           </div>
@@ -243,11 +218,9 @@ export function Interest() {
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Service *</span>
-                  </>
-                }
+          
+                label="Service *"
+                labelProps={{ className: "!text-[#A41460]" }}   
                 placeholder="Type all Products or Services separated by commas"
                 name="person_service"
                 value={formData.person_service}
@@ -255,19 +228,14 @@ export function Interest() {
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.person_service ? "placeholder-red-500" : ""
                 }`}
-
-                // required
               />
             </div>
 
             <div>
               <Input
                 variant="static"
-                label={
-                  <>
-                    <span className="text-[#A41460] ml-1"> Message</span>
-                  </>
-                }
+                label="Message"
+                labelProps={{ className: "!text-[#A41460]" }} 
                 placeholder="Enter your message"
                 name="person_message"
                 value={formData.person_message}
