@@ -1,255 +1,562 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Footer } from "@/widgets/layout";
+import { Button, Card, Input, Option, Select, Textarea } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
+
+export function Register() {
+  const [errors, setErrors] = useState({});
+
+  const [register, setRegisterData] = useState({
+    name: "",
+    gender: "",
+    email: "",
+    mobile: "",
+    whatsapp_number: "",
+    image: null,
+    dob: "",
+    spouse_name: "",
+    company_short: "",
+    company: "",
+    doa: "",
+    business_category: "",
+    experience: "",
+    website: "",
+    address: "",
+    area: "",
+    products: "",
+    landline: "",
+    product_tag: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const naviagte =useNavigate()
+  const [image, setImage] = useState("");
+
+  const handleValidation = () => {
+    let newErrors = {};
+
+    if (!register.name) newErrors.name = "Full name is required";
+
+    if (!register.gender) newErrors.gender = "Gender is required";
+    if (!register.email) newErrors.email = "Email is required";
+    if (!register.mobile) newErrors.mobile = "Mobile is required";
+    if (!register.whatsapp_number) newErrors.whatsapp_number = "Mobile is required";
+    // if (!register.image)
+    //   newErrors.image = "Image is required";
+    if (!register.dob)
+      newErrors.dob = "Date of Birth is required";
+
+    if (!register.business_category)
+      newErrors.business_category = "Company name is required";
+
+    if (!register.address)
+      newErrors.address = "addressis required";
+    if (!register.company)
+      newErrors.company = "company required";
+    if (!register.area)
+      newErrors.area = "area is  required";
+
+    if (!register.products)
+      newErrors.products = "Products/Services details are required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; 
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    console.log(value,"name")
+    if (name === "mobile" || name === "whatsapp_number" || name === "landline") {
+        if (!/^\d*$/.test(value)) return;
+      }
+      setRegisterData((prev) => ({
+        ...prev,
+        [name]: files ? files[0] : value, // Assign file properly
+      }));
+  };
 
 
-
-
-
-
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import {
-  Navbar as MTNavbar,
-  Typography,
-  Button,
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Collapse,
-} from "@material-tailwind/react";
-import { Bars3Icon, XMarkIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-
-export function Navbar({ routes, action }) {
-  const [openNav, setOpenNav] = React.useState(false);
-  const [openMenu, setOpenMenu] = React.useState(false);
-  const { scrollY } = useScroll();
-  const navRef = useRef(null);
   
-  const width = useTransform(scrollY, [0, 100], ["100%", "100%"]);
-  const left = useTransform(scrollY, [0, 100], ["50%", "0%"]);
-  const translateX = useTransform(scrollY, [0, 100], ["-50%", "0%"]);
-  const navbarHeight = useTransform(scrollY, [0, 100], ["4.5rem", "4rem"]);
-  const backgroundColor = useTransform(
-    scrollY,
-    [0, 100],
-    ["rgba(255, 255, 255, 0.7)", "rgba(255, 255, 255, 0.95)"]
-  );
-  const boxShadow = useTransform(
-    scrollY, 
-    [0, 100], 
-    ["0 4px 12px rgba(0,0,0,0.05)", "0 2px 8px rgba(0,0,0,0.1)"]
-  );
-  const borderRadius = useTransform(scrollY, [0, 100], ["0rem", "0rem"]);
-  
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (navRef.current && !navRef.current.contains(event.target) && openNav) {
-        setOpenNav(false);
-      }
-    };
-    
-    const handleEscKey = (event) => {
-      if (event.key === 'Escape' && openNav) {
-        setOpenNav(false);
-      }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
 
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleEscKey);
-    
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleEscKey);
-    };
-  }, [openNav]);
+    data.append("name", register.name);
+    data.append("gender", register.gender);
+    data.append("email", register.email);
+    data.append("mobile", register.mobile);
+    data.append("whatsapp_number", register.whatsapp_number);
+    data.append("image", register.image);
 
-  // Close on resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 960) {
-        setOpenNav(false);
+    data.append("dob", register.dob);
+    data.append("spouse_name", register.spouse_name); 
+    data.append("company_short", register.company_short);
+    data.append("company", register.company);
+    data.append("doa", register.doa);
+    // data.append("business_category", register.business_category);
+    data.append("category", register.business_category);
+    data.append("experience", register.experience);
+    data.append("website", register.website);
+    data.append("address", register.address);
+    data.append("area", register.area);
+    data.append("products", register.products);
+    data.append("landline", register.landline);
+    data.append("profile_tag",register.product_tag);
+    // data.append("product_tag",register.product_tag);
+ 
+    if (!handleValidation()) return;
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        "http://businessboosters.club/public/api/createUser",
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (response.status === 200) {
+        navigate("/thankyou");
+        setRegisterData({
+            name: "",
+            gender: "",
+            email: "",
+            mobile: "",
+            whatsapp_number: "",
+            image: null,
+            dob: "",
+            spouse_name: "",
+            company_short: "",
+            company: "",
+            doa: "",
+            business_category: "",
+            experience: "",
+            website: "",
+            address: "",
+            area: "",
+            products: "",
+            landline: "",
+            product_tag: "",
+          });
+      } else {
+        navigate("/failure");
       }
-    };
-    
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const navList = (
-    <ul className="mb-0 mt-0 flex flex-col gap-1 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {routes.map(({ name, path, icon, href, target }) => (
-        <Typography
-          key={name}
-          as="li"
-          variant="small"
-          color="black"
-          className="capitalize p-0"
-        >
-          {href ? (
-            <a
-              href={href}
-              target={target}
-              className="flex items-center gap-1 py-1 px-2 font-medium text-md hover:bg-black/5 rounded transition-colors"
-              onClick={() => setOpenNav(false)}
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-4 h-4 opacity-75 mr-1",
-                })}
-              {name}
-            </a>
-          ) : (
-            <Link
-              to={path}
-              target={target}
-              className="flex items-center gap-1 py-1 px-2 font-medium text-md hover:bg-black/5 rounded transition-colors"
-              onClick={() => setOpenNav(false)}
-            >
-              {icon &&
-                React.createElement(icon, {
-                  className: "w-4 h-4 opacity-75 mr-1",
-                })}
-              {name}
-            </Link>
-          )}
-        </Typography>
-      ))}
-    </ul>
-  );
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      navigate("/failure");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <motion.div
-      className="fixed top-0 z-50"
-      style={{
-        width,
-        left,
-        translateX,
-      }}
-      ref={navRef}
-    >
-      <motion.div
-        style={{
-          backgroundColor,
-          borderRadius,
-          boxShadow,
-          height: navbarHeight,
-        }}
-        className="transition-all duration-300 ease-in-out backdrop-blur-sm"
-      >
-        <div className="px-3 h-full">
-          <div className="container mx-auto flex items-center justify-between h-full">
-            <Link to="/">
-              <div className="flex items-center py-1 px-2">
-                <img 
-                  src="https://businessboosters.club/static/media/logo.b092c9f492105e973cc3.png" 
-                  alt="Business Boosters Logo" 
-                  className="h-10 w-auto"
+    <>
+      {/* Hero Section */}
+      <section className="relative block h-[40vh] bg-white">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
+          <h1 className="text-center font-bold text-5xl mb-4 text-gray-800">
+            Business Registration
+          </h1>
+          <p className="text-xl text-center font-light max-w-2xl text-gray-700">
+            Join our network and expand your business opportunities!
+          </p>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12">
+      <Card className="p-8 bg-gradient-to-r mx-5 md:mx-10 px-8 py-10 border border-[#A41460]  hover:shadow-2xl transition-shadow duration-300">
+          <h2 className="font-bold text-center mb-8 text-[#A41460] text-2xl">
+            Complete Your Registration
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Personal Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+              <Input
+                variant="static"
+                label={
+                  <>
+                    {" "}
+                    <span className="text-[#A41460] "> Full Name *</span>
+                  </>
+                }
+                placeholder="Enter your full name"
+                name="name"
+                value={register.name}
+                onChange={handleInputChange}
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                  errors.name ? "placeholder-red-500" : ""
+                }`}
+              />
+              <div>
+                <Select
+                  variant="static"
+                  required
+                  label={
+                    <>
+                      <span className="text-[#A41460] "> Gender *</span>
+                    </>
+                  }
+                  onChange={(value) =>
+                    setRegisterData({ ...register, gender: value })
+                  }
+                  className={`${errors.gender ? "border-red-500" : ""}`}
+                >
+                  <Option value="MALE">Male</Option>
+                  <Option value="FEMALE">Female</Option>
+                </Select>
+              </div>
+
+              <div>
+                <Input
+                  variant="static"
+                  type="email"
+                  label={
+                    <>
+                      <span className="text-[#A41460] "> Email *</span>
+                    </>
+                  }
+                  placeholder="Enter your Email"
+                  name="email"
+                  value={register.email}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.email ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                  // required
                 />
               </div>
-            </Link>
-            <div className="hidden lg:block">{navList}</div>
-            <div className="hidden gap-1 lg:flex items-center">
-              <Link to='/register'>
-                <Button variant="text" className="py-1.5 px-3 text-sm text-[#A51B64]">
-                  Join Us
-                </Button>
-              </Link>
-              <a
-                href="https://login.businessboosters.club/login"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Button variant="text" className="py-1.5 px-3 text-sm text-[#A51B64]">
-                  Login
-                </Button>
-              </a>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] "> Mobile Number *</span>
+                    </>
+                  }
+                  placeholder="Enter your  Mobile Number"
+                  name="mobile"
+                  value={register.mobile}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.mobile ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                  maxLength={10}
+                  // required
+                />
+              </div>
+
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460]"> WhatsApp Number*</span>
+                    </>
+                  }
+                  placeholder="Enter your WhatsApp Number"
+                  name="whatsapp_number"
+                  value={register.whatsapp_number}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.whatsapp_number
+                      ? "placeholder-red-500 border-red-500"
+                      : ""
+                  }`}
+                  maxLength={10}
+                  // required
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  type="date"
+                  label={
+                    <>
+                      <span className="text-[#A41460]"> Date of Birth*</span>
+                    </>
+                  }
+                  placeholder="Enter your Date of Birth"
+                  name="dob"
+                  value={register.dob}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.dob ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                  // required
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460]">Spouse Name</span>
+                    </>
+                  }
+                  placeholder="Enter your Spouse Name"
+                  name="spouse_name"
+                  value={register.spouse_name}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.spouse_name
+                      ? "placeholder-red-500 border-red-500"
+                      : ""
+                  }`}
+                  // required
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  type="date"
+                  label={
+                    <>
+                      <span className="text-[#A41460]"> Anniversary Date</span>
+                    </>
+                  }
+                  placeholder="Enter your Anniversary Date"
+                  name="doa"
+                  value={register.doa}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400`}
+                  // required
+                />
+              </div>
+            
+            
+              <div>
+              <Input
+  variant="static"
+  type="file"
+  label={
+    <>
+      <span className="text-[#A41460] ml-1"> Profile Image </span>
+    </>
+  }
+  accept="image/*"
+  placeholder="Enter your Area"
+  name="image"
+  
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setImage(file); // Update local state for the image
+    setRegisterData("image", file); // Update Formik field value
+  }}  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+    errors.image ? "placeholder-red-500 border-red-500" : ""
+  }`}
+/>
+
+              </div>
+            
             </div>
-            <IconButton
-              variant="text"
-              size="sm"
-              className="ml-auto lg:hidden h-8 w-8 flex items-center justify-center"
-              onClick={() => setOpenNav(!openNav)}
-            >
-              {openNav ? (
-                <XMarkIcon strokeWidth={2} className="h-5 w-5" />
-              ) : (
-                <Bars3Icon strokeWidth={2} className="h-5 w-5" />
-              )}
-            </IconButton>
-          </div>
-          
-          <AnimatePresence>
-            {openNav && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="lg:hidden"
-              >
-                <div className="rounded-b-lg bg-white/95 backdrop-blur-sm px-4 pt-3 pb-6 text-blue-gray-900 shadow-lg border border-gray-100">
-                  <div className="container mx-auto">
-                    <div className="mb-6 border-b border-gray-100 pb-4">
-                      <Typography variant="h5" className="font-bold text-[#A51B64] mb-2">
-                        Menu
-                      </Typography>
-                      {navList}
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Link to='/register' className="col-span-1">
-                        <Button 
-                          variant="gradient" 
-                          size="md"
-                          fullWidth
-                          onClick={() => setOpenNav(!openNav)}
-                          className="py-2.5 text-white bg-gradient-to-r from-[#A51B64] to-[#CE267A] shadow-md"
-                        >
-                          Join Us
-                        </Button>
-                      </Link>
-                      <a
-                        href="https://login.businessboosters.club/login"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="col-span-1"
-                      >
-                        <Button 
-                          variant="outlined" 
-                          size="md"
-                          onClick={() => setOpenNav(!openNav)}
-                          fullWidth
-                          className="py-2.5 border-[#A51B64] text-[#A51B64]"
-                        >
-                          Login
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </motion.div>
-    </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-6 md:gap-10">
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460]">Company Name *</span>
+                    </>
+                  }
+                  placeholder="Enter your Company Name"
+                  name="company"
+                  value={register.company}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.company ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                  // required
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1">
+                        {" "}
+                        Business Category *
+                      </span>
+                    </>
+                  }
+                  placeholder="Enter your Business Category"
+                  name="business_category"
+                  value={register.business_category}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.business_category
+                      ? "placeholder-red-500 border-red-500"
+                      : ""
+                  }`}
+                  // required
+                />
+              </div>
+
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1"> Experience </span>
+                    </>
+                  }
+                  placeholder="Enter your Experience"
+                  name="experience"
+                  value={register.experience}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.experience
+                      ? "placeholder-red-500 border-red-500"
+                      : ""
+                  }`}
+                  // required
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1"> Website </span>
+                    </>
+                  }
+                  placeholder="Enter your Website"
+                  name="website"
+                  value={register.website}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.website ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                  // required
+                />
+              </div>
+
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1">
+                        {" "}
+                        Landline Number{" "}
+                      </span>
+                    </>
+                  }
+                  placeholder="Enter your Landline Number"
+                  name="landline"
+                  value={register.landline}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.landline ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1"> Address *</span>
+                    </>
+                  }
+                  placeholder="Enter your Address"
+                  name="address"
+                  value={register.address}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.address ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1"> Area *</span>
+                    </>
+                  }
+                  placeholder="Enter your Area"
+                  name="area"
+                  value={register.area}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.area ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                />
+              </div>
+           
+            </div>
+
+            <div className="grid grid-cols-1  gap-6 md:gap-10">
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1">
+                        Products/Services *
+                      </span>
+                    </>
+                  }
+                  placeholder="Type all Products or Services separated by comma"
+                  name="products"
+                  value={register.products}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.products ? "placeholder-red-500 border-red-500" : ""
+                  }`}
+                  // required
+                />
+              </div>
+              <div>
+                <Input
+                  variant="static"
+                  label={
+                    <>
+                      <span className="text-[#A41460] ml-1">Product Tags</span>
+                    </>
+                  }
+                  placeholder="Type all Products or Services related Tags Separated by comma (e.g., CCTV - Security System, Camera, Surveillance)"
+                  name="product_tag"
+                  value={register.product_tag}
+                  onChange={handleInputChange}
+                  className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
+                    errors.product_tag
+                      ? "placeholder-red-500 border-red-500"
+                      : ""
+                  }`}
+                  // required
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-center mt-8">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full sm:w-auto px-8 py-3 bg-[#A41460] hover:bg-[#802053] transition-colors duration-300"
+                >
+                {loading ? "Submitting..." : "Register Now"}
+              </Button>
+            </div>
+          </form>
+        </Card>
+      </div>
+
+      {/* Footer */}
+      <div className="bg-white mt-12">
+        <Footer />
+      </div>
+    </>
   );
 }
 
-Navbar.defaultProps = {
-  routes: [],
-  action: null,
-};
-
-Navbar.propTypes = {
-  routes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  action: PropTypes.node,
-};
-
-Navbar.displayName = "/src/widgets/layout/navbar.jsx";
-
-export default Navbar;
+export default Register;
