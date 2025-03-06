@@ -13,6 +13,7 @@ import {
 
 } from "@heroicons/react/24/solid";
 import { Footer } from "@/widgets/layout";
+import PartnerCardSkeleton from "@/widgets/cards/partner-card-skeleton";
 
 
 const PartnerCard = ({ partner, openDialog }) => {
@@ -275,12 +276,19 @@ export function Services() {
   const handleCloseDialog = () => {
     setDialogOpen(false);
   };
+  const PartnersSkeleton = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {Array(12).fill(0).map((_, index) => (
+        <PartnerCardSkeleton key={index} />
+      ))}
+    </div>
+  );
 
   return (
     <>
       <section className="relative block h-[30vh] bg-white">
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
-          <Typography variant="h1" color="gray" className="text-center font-bold text-4xl">
+          <Typography variant="h1" color="gray" className="text-center font-bold text-4xl  mt-10 md:mt-0">
             Our Awesome Partners
           </Typography>
         </div>
@@ -310,12 +318,7 @@ export function Services() {
 
           <div className="mt-8">
             {loading ? (
-              <div className="flex justify-center items-center py-12 bg-white rounded-lg shadow">
-                <div className="text-center">
-                  <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
-                  <p className="mt-2 text-gray-700">Loading partners...</p>
-                </div>
-              </div>
+               <PartnersSkeleton />
             ) : filteredPartners.length === 0 ? (
               <div className="flex justify-center items-center py-12 bg-white rounded-lg shadow">
                 <p className="text-gray-700">No partners found matching your search.</p>
