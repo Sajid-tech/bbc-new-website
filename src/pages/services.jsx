@@ -57,6 +57,7 @@ const PartnerCard = ({ partner, openDialog }) => {
                 href={`/business-profile/${partner.company_short}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => localStorage.setItem("short", partner.company_short)}
                 className="flex-1 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 transition-colors border-r border-gray-100 text-center"
               >
                 View Profile
@@ -76,7 +77,7 @@ const PartnerCard = ({ partner, openDialog }) => {
               href={`https://api.whatsapp.com/send/?text=${partner.name} ${partner.mobile} ${partner.company} ${partner.occupation}`}
               target="_blank"
             >
-              <button className="flex items-center justify-center px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors">
+              <button className="flex items-center justify-center px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 transition-colors">
                 <ShareIcon className="h-4 w-4" />
               </button>
             </a>
@@ -99,13 +100,7 @@ const PartnerProfileDialog = ({ open, handleClose, partner }) => {
         {/* Header */}
         <div className="relative px-6 py-4 flex items-center justify-between border-b border-gray-200">
           <div className="flex items-center">
-            <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 border border-gray-200 mr-3">
-              <img
-                src={partner.image ? `http://businessboosters.club/public/images/user_images/${partner.image}` : "http://businessboosters.club/public/images/user_images/no_images.png"}
-                alt={partner.name}
-                className="h-full w-full object-cover"
-              />
-            </div>
+           
             <div>
               <h2 className="text-lg font-semibold text-gray-900">{partner.name}</h2>
               <p className="text-xs text-gray-500">{partner.occupation || partner.category || ""}</p>
@@ -124,7 +119,15 @@ const PartnerProfileDialog = ({ open, handleClose, partner }) => {
         <div className="flex-1 overflow-y-auto p-6">
           <div className="space-y-6">
             {/* Summary card */}
-            <div className="bg-blue-50 rounded-xl p-4">
+            <div className="flex flex-row w-full">
+            <div className="h-[12rem] w-36 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 mr-3">
+              <img
+                src={partner.image ? `http://businessboosters.club/public/images/user_images/${partner.image}` : "http://businessboosters.club/public/images/user_images/no_images.png"}
+                alt={partner.name}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="bg-blue-50 rounded-xl w-full p-4">
               <h3 className="text-lg font-medium text-gray-900 mb-2">{partner.company}</h3>
               {partner.product && (
                 <div>
@@ -135,6 +138,8 @@ const PartnerProfileDialog = ({ open, handleClose, partner }) => {
                 </div>
               )}
             </div>
+            </div>
+          
 
             {/* Contact Information */}
             <div className="space-y-6">
@@ -286,7 +291,7 @@ export function Services() {
 
   return (
     <>
-      <section className="relative block h-[30vh] bg-white">
+      <section className="relative block h-[25vh]  bg-white mt-4 md:mt-8">
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
           <Typography variant="h1" color="gray" className="text-center font-bold text-4xl  mt-10 md:mt-0">
             Our Awesome Partners

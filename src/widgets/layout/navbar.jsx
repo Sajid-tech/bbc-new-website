@@ -186,7 +186,7 @@ export function Navbar({ routes, action }) {
                   <img 
                     src="https://businessboosters.club/static/media/logo.b092c9f492105e973cc3.png" 
                     alt="Business Boosters Logo" 
-                    className="h-10 w-auto"
+                    className=" h-12 w-auto "
                   />
                 </div>
               </Link>

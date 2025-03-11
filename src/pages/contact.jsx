@@ -80,7 +80,7 @@ export function Contact() {
 
   return (
     <>
-      <section className="relative block h-[40vh] bg-white">
+      <section className="relative block h-[25vh]  bg-white mt-16 md:mt-16">
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
           <Typography
             variant="h1"
@@ -101,7 +101,7 @@ export function Contact() {
 
       <div className="container mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="space-y-8">
-          <Card className="p-8 bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 hover:shadow-2xl transition-shadow duration-300">
+          <Card className="p-8 border border-blue-200 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center space-x-4">
               <div className="p-4 bg-blue-500 rounded-full">
                 <MapPinIcon className="w-8 h-8 text-white" />
@@ -118,7 +118,7 @@ export function Contact() {
           </Card>
 
           {/* Email Card */}
-          <Card className="p-8 bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 hover:shadow-2xl transition-shadow duration-300">
+          <Card className="p-8  border border-purple-200 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center space-x-4">
               <div className="p-4 bg-purple-500 rounded-full">
                 <EnvelopeIcon className="w-8 h-8 text-white" />
@@ -135,7 +135,7 @@ export function Contact() {
           </Card>
 
           {/* Phone Card */}
-          <Card className="p-8 bg-gradient-to-r from-green-50 to-green-100 border border-green-200 hover:shadow-2xl transition-shadow duration-300">
+          <Card className="p-8  border border-green-200 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center space-x-4">
               <div className="p-4 bg-green-500 rounded-full">
                 <PhoneIcon className="w-8 h-8 text-white" />
@@ -150,13 +150,13 @@ export function Contact() {
                   <p>UMESH TULSYAN - 93416 66007</p>
                 </Typography> */}
 <Typography variant="paragraph" className="text-green-800">
-  BHUPENDRA KOTWAL - 93412 14936
+  BHUPENDRA KOTWAL - 9341214936
 </Typography>
 <Typography variant="paragraph" className="text-green-800">
-  NARENDAR GEHLOT - 97411 41114
+  NARENDAR GEHLOT - 9741141114
 </Typography>
 <Typography variant="paragraph" className="text-green-800">
-  UMESH TULSYAN - 93416 66007
+  UMESH TULSYAN - 9341666007
 </Typography>
 
 

@@ -63,14 +63,14 @@ export function Interest() {
       newErrors.person_join = "You must agree to join BBC";
     }
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; 
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("formdata before", formData)
     if (!handleValidation()) return;
-
+    console.log("formdata after", formData)
     setLoading(true);
 
     try {
@@ -97,7 +97,7 @@ export function Interest() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative block h-[40vh] bg-white mt-10 md:mt-0">
+      <section className="relative block h-[25vh]  bg-white mt-16 md:mt-16">
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
           <h1 className="text-center font-bold text-5xl mb-4 text-gray-800">
             Want to Join BBC?
@@ -118,17 +118,16 @@ export function Interest() {
             <div>
               <Input
                 variant="static"
-            
+
                 label="Full Name *"
-                labelProps={{ className: "!text-[#A41460]" }} 
+                labelProps={{ className: "!text-[#A41460]" }}
 
                 placeholder="Enter your full name"
                 name="person_name"
                 value={formData.person_name}
                 onChange={handleInputChange}
-                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-                  errors.person_name ? "placeholder-red-500" : ""
-                }`}
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_name ? "placeholder-red-500" : ""
+                  }`}
               />
             </div>
 
@@ -136,64 +135,76 @@ export function Interest() {
               <Input
                 variant="static"
                 label="Email *"
-                labelProps={{ className: "!text-[#A41460]" }} 
+                labelProps={{ className: "!text-[#A41460]" }}
                 type="email"
                 placeholder="Enter your email"
                 name="person_email"
                 value={formData.person_email}
                 onChange={handleInputChange}
-                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-                  errors.person_email ? "placeholder-red-500" : ""
-                }`}
-                              />
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_email ? "placeholder-red-500" : ""
+                  }`}
+              />
             </div>
 
             <div>
               <Input
                 variant="static"
                 label="Mobile Number *"
-                labelProps={{ className: "!text-[#A41460]" }} 
+                labelProps={{ className: "!text-[#A41460]" }}
                 placeholder="Enter your mobile number"
                 name="person_mobile"
                 value={formData.person_mobile}
                 onChange={handleInputChange}
                 maxLength={10}
-                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-                  errors.person_mobile ? "placeholder-red-500" : ""
-                }`}
-                // required
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_mobile ? "placeholder-red-500" : ""
+                  }`}
+              // required
               />
             </div>
 
             <div>
-              <Select
+              {/* <Select
                 variant="static"
                 required
                 label="Occupation *"
                 labelProps={{ className: "text-[#A41460]" }} 
+             
                 className={`${
                   errors.person_occupation ? "border-red-500" : ""
                 }`}
               >
                 <Option value="Business">Business</Option>
                 <Option value="Professional">Professional</Option>
+              </Select> */}
+
+              <Select
+                variant="static"
+                required
+                label="Occupation *"
+                labelProps={{ className: "text-[#A41460]" }}
+                value={formData.person_occupation}
+                onChange={(value) => setFormData((prev) => ({ ...prev, person_occupation: value }))}
+                className={`${errors.person_occupation ? "border-red-500" : ""}`}
+              >
+                <Option value="Business">Business</Option>
+                <Option value="Professional">Professional</Option>
               </Select>
+
             </div>
 
             <div>
               <Input
                 variant="static"
                 label="Company *"
-                labelProps={{ className: "!text-[#A41460]" }} 
+                labelProps={{ className: "!text-[#A41460]" }}
                 placeholder="Enter your company"
                 name="person_company"
                 value={formData.person_company}
                 onChange={handleInputChange}
-                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-                  errors.person_company
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_company
                     ? "placeholder-red-500 border-red-500"
                     : ""
-                }`}
+                  }`}
               />
             </div>
 
@@ -202,14 +213,13 @@ export function Interest() {
                 variant="static"
 
                 label="Area *"
-                labelProps={{ className: "!text-[#A41460]" }}         
-                        placeholder="Enter your area"
+                labelProps={{ className: "!text-[#A41460]" }}
+                placeholder="Enter your area"
                 name="person_area"
                 value={formData.person_area}
                 onChange={handleInputChange}
-                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-                  errors.person_area ? "placeholder-red-500" : ""
-                }`}
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_area ? "placeholder-red-500" : ""
+                  }`}
               />
             </div>
           </div>
@@ -218,16 +228,15 @@ export function Interest() {
             <div>
               <Input
                 variant="static"
-          
+
                 label="Service *"
-                labelProps={{ className: "!text-[#A41460]" }}   
+                labelProps={{ className: "!text-[#A41460]" }}
                 placeholder="Type all Products or Services separated by commas"
                 name="person_service"
                 value={formData.person_service}
                 onChange={handleInputChange}
-                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
-                  errors.person_service ? "placeholder-red-500" : ""
-                }`}
+                className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_service ? "placeholder-red-500" : ""
+                  }`}
               />
             </div>
 
@@ -235,7 +244,7 @@ export function Interest() {
               <Input
                 variant="static"
                 label="Message"
-                labelProps={{ className: "!text-[#A41460]" }} 
+                labelProps={{ className: "!text-[#A41460]" }}
                 placeholder="Enter your message"
                 name="person_message"
                 value={formData.person_message}
@@ -251,9 +260,8 @@ export function Interest() {
                   checked={formData.person_join === "Yes"}
                   onChange={handleInputChange}
                   name="person_join"
-                  className={`bg-gray-100 text-gray-700 ${
-                    errors.person_join ? "border border-red-500" : ""
-                  }`}
+                  className={`bg-gray-100 text-gray-700 ${errors.person_join ? "border border-red-500" : ""
+                    }`}
                 />
                 <label className="text-gray-700 text-xs md:text-sm">
                   To learn more about BBC, click here to attend the next

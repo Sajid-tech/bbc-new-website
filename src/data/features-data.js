@@ -1,13 +1,13 @@
-import {
-  ChatBubbleBottomCenterTextIcon,
-} from "@heroicons/react/24/solid";
 
+import { FaHandshake } from "react-icons/fa";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CiLogin } from "react-icons/ci";
 export const featuresData = [
   {
     color: "gray",
     link: "/register",
     title: "Join Us",
-    icon: ChatBubbleBottomCenterTextIcon,
+    icon: FaHandshake,
     description:
       "We all are here to develop and boost businesses of group members. We trust each other and help each other to grow.",
   },
@@ -15,7 +15,7 @@ export const featuresData = [
     color: "gray",
     link: "/services",
     title: "Find a Services",
-    icon: ChatBubbleBottomCenterTextIcon,
+    icon: IoSettingsOutline,
     description:
       "Services/Businesses referred to you would be given to you by our trusted members would be of best quality and price.",
   },
@@ -23,7 +23,7 @@ export const featuresData = [
     color: "gray",
     link: "https://login.businessboosters.club/login",
     title: "Login",
-    icon: ChatBubbleBottomCenterTextIcon,
+    icon: CiLogin,
     description:
       "Already Registered User ? Click here to login. You can update your details here.",
   },

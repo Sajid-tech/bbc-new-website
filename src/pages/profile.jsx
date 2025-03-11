@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { TeamSlider } from "@/widgets/cards";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import TeamSliderPartner from "@/widgets/cards/team-card-partner";
 
 export function Profile() {
   const [teamData, setTeamData] = useState([]);
@@ -113,7 +114,7 @@ export function Profile() {
             {/* Label 3: 5+ Successful Years */}
             <div className="bg-white border-l-4 border-orange-500 shadow-lg rounded-lg p-6 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <Typography variant="h2" className="text-4xl font-bold text-orange-500">
-                5+
+                6+
               </Typography>
               <Typography variant="h5" className="mt-2 text-xl font-semibold text-gray-800">
                 Successful Years
@@ -139,7 +140,7 @@ export function Profile() {
                 className="h-24 w-24 mx-auto rounded-full border-4 border-white transition-all duration-300 hover:border-indigo-500"
               />
               <p className="mt-4 text-xl font-semibold text-gray-800">BHUPENDRA KOTWAL</p>
-              <span className="text-gray-600">President</span>
+              <span className="text-gray-600">9341214936</span>
             </div>
 
             {/* Card 2 */}
@@ -150,7 +151,7 @@ export function Profile() {
                 className="h-24 w-24 mx-auto rounded-full border-4 border-white transition-all duration-300 hover:border-indigo-500"
               />
               <p className="mt-4 text-xl font-semibold text-gray-800">NARENDAR GEHLOT</p>
-              <span className="text-gray-600">Secretary</span>
+              <span className="text-gray-600">9741141114</span>
             </div>
 
             {/* Card 3 */}
@@ -161,7 +162,7 @@ export function Profile() {
                 className="h-24 w-24 mx-auto rounded-full border-4 border-white transition-all duration-300 hover:border-indigo-500"
               />
               <p className="mt-4 text-xl font-semibold text-gray-800">UMESH TULSYAN</p>
-              <span className="text-gray-600">Treasurer</span>
+              <span className="text-gray-600">9341666007</span>
             </div>
           </div>
         </div>
@@ -176,6 +177,7 @@ export function Profile() {
           <div className="mt-24">
             {error && <div className="text-red-500">{error}</div>}
             <TeamSlider teamData={teamData} loading={loading}  />
+            <TeamSliderPartner teamData={teamData} loading={loading} />
           </div>
         </div>
       </section>
