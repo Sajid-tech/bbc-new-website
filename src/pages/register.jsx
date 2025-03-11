@@ -148,8 +148,8 @@ const resetForm = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative block h-[40vh] bg-white mt-10 md:mt-0">
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
+      <section className="relative block h-[25vh]  bg-white mt-16 md:mt-16">
+        <div className="absolute inset-0 flex flex-col  items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
           <h1 className="text-center font-bold text-5xl mb-4 text-gray-800">
             Business Registration
           </h1>
@@ -161,8 +161,8 @@ const resetForm = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
-      <Card className="p-8 bg-gradient-to-r mx-5 md:mx-10 px-8 py-10 border border-[#A41460]  hover:shadow-2xl transition-shadow duration-300">
-          <h2 className="font-bold text-center mb-8 text-[#A41460] text-2xl">
+      <Card className="p-8 bg-gradient-to-r mx-5 md:mx-10 px-8 py-5 border border-[#A41460]  hover:shadow-2xl transition-shadow duration-300">
+          <h2 className="font-bold text-center mb-12 text-[#A41460] text-2xl">
             Complete Your Registration
           </h2>
 

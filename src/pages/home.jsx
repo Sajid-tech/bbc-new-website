@@ -309,7 +309,7 @@ export function Home() {
               
               Our members not only enjoy business referrals but also have develop healthy family bonding with each other.
               
-              we believe in <span className="text-black font-bold">"SABKA SATH SABKA VISHWAS"</span>.
+              we believe in <br/> <br/>  <span className="text-[#A51B64]  font-bold text-2xl">"SABKA SATH SABKA VISHWAS"</span>.
             </PageTitle>
           </AnimatedText>
           
@@ -353,13 +353,9 @@ export function Home() {
           
           {/* Follow Us Section */}
           <AnimatedText>
-            <PageTitle section="" heading="Follow Us">
-              This is group which believes in fair and honest business, to not only help customers but develop personal relationship. Thus growing in every field.
-              
-              Our members not only enjoy business referrals but also have develop healthy family bonding with each other.
-              
-              we believe in <span className="text-black font-bold">"SABKA SATH SABKA VISHWAS"</span>.
-            </PageTitle>
+            <PageTitle section="" heading="Follow Us"/>
+             
+          
           </AnimatedText>
           
           <div className="container mx-auto px-4 mb-8 mt-8">
@@ -472,7 +468,7 @@ export function Home() {
       <section className="px-4 md:px-20 pt-10 pb-5">
         <AnimatedCard>
           <motion.div 
-            className="flex flex-col lg:flex-row items-center justify-between bg-gradient-to-r from-blue-50 to-blue-100 p-8 rounded-lg shadow-lg"
+            className="flex flex-col lg:flex-row items-center justify-between bg-gradient-to-r from-blue-50 to-blue-100 p-12 rounded-lg shadow-lg"
             whileHover={{ 
               boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
               scale: 1.01

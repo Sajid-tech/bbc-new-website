@@ -59,16 +59,25 @@ export function Gallery() {
 
     return (
         <>
-            <section className="relative block h-[40vh] bg-white">
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
-                    <Typography variant="h1" color="gray" className="text-center font-bold text-4xl mb-4 mt-12 md:mt-0">
-                        Gallery
-                    </Typography>
-                    <Typography variant="lead" color="gray" className="text-xl text-center font-light max-w-2xl">
+           
+                  <section className="relative block h-[25vh]  bg-white mt-16 md:mt-16">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-gray-100 to-gray-300">
+                      <Typography
+                        variant="h1"
+                        color="gray"
+                        className="text-center font-bold text-5xl mb-4"
+                      >
+                       Gallery
+                      </Typography>
+                      <Typography
+                        variant="lead"
+                        color="gray"
+                        className="text-xl text-center font-light max-w-2xl"
+                      >
                         A mentor is an individual with expertise who can help develop the career of a mentee. Meet our Mentors.
-                    </Typography>
-                </div>
-            </section>
+                      </Typography>
+                    </div>
+                  </section>
 
             <div className="p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {loading ? (
