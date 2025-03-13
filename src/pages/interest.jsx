@@ -6,6 +6,7 @@ import {
   Checkbox,
   Button,
   Card,
+  Textarea,
 } from "@material-tailwind/react";
 import { Footer } from "@/widgets/layout";
 import { motion } from "framer-motion";
@@ -49,7 +50,16 @@ export function Interest() {
     let newErrors = {};
 
     if (!formData.person_name) newErrors.person_name = "Full name is required";
-    if (!formData.person_email) newErrors.person_email = "Email is required";
+
+
+   
+
+    if (!formData.person_email) {
+      newErrors.person_email = "Email is required";
+    } else if (!formData.person_email.endsWith(".com")) {
+      newErrors.person_email = "Email must end with .com";
+    }
+
     if (!formData.person_mobile || formData.person_mobile.length !== 10)
       newErrors.person_mobile = "Enter a valid 10-digit mobile number";
     if (!formData.person_occupation)
@@ -141,9 +151,12 @@ export function Interest() {
                 name="person_email"
                 value={formData.person_email}
                 onChange={handleInputChange}
+               
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${errors.person_email ? "placeholder-red-500" : ""
                   }`}
+                  
               />
+                {errors.person_email && <p className=" text-sm text-red-500">{errors.person_email}</p>}
             </div>
 
             <div>
@@ -226,7 +239,7 @@ export function Interest() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
-              <Input
+              <Textarea
                 variant="static"
 
                 label="Service *"
@@ -241,7 +254,7 @@ export function Interest() {
             </div>
 
             <div>
-              <Input
+              <Textarea
                 variant="static"
                 label="Message"
                 labelProps={{ className: "!text-[#A41460]" }}
@@ -267,7 +280,9 @@ export function Interest() {
                   To learn more about BBC, click here to attend the next
                   meeting.
                 </label>
+               
               </div>
+              {errors.person_join && <p className="text-red-500 text-sm mt-1">{errors.person_join}</p>}
             </div>
           </div>
 

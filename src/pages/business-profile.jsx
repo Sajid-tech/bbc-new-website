@@ -35,7 +35,7 @@ const BusinessProfile = () => {
     const [visibleImages, setVisibleImages] = useState([]);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const [errors, setErrors] = useState({});
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
@@ -95,9 +95,23 @@ const BusinessProfile = () => {
             [name]: value
         }));
     };
-
+    const validate = () => {
+        let tempErrors = {};
+      
+        if (!formData.contact_email) {
+            tempErrors.contact_email = "Email is required";
+        } else if (!formData.contact_email.endsWith(".com")) {
+            tempErrors.contact_email = "Email must end with .com";
+        } else if (!/\S+@\S+\.\S+/.test(formData.contact_email)) {
+            tempErrors.contact_email = "Email is not valid";
+        }
+    
+        setErrors(tempErrors);
+        return Object.keys(tempErrors).length === 0;
+    };
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!validate()) return;
         setLoadingSumbit(true);
         setError("");
         setSuccessMessage("");
@@ -113,7 +127,7 @@ const BusinessProfile = () => {
     
         try {
             const response = await axios.post(
-                "http://businessboosters.club/public/api/createEnquiry",
+                "http://businessboosters.club/public/api/createEnquiryD",
                 formSubmitData,
                 {
                     headers: {
@@ -698,12 +712,14 @@ const BusinessProfile = () => {
                                         type="email"
                                         id="contact_email"
                                         name="contact_email"
-                                        required
+                                        
                                         value={formData.contact_email}
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                                         placeholder="john@example.com"
                                     />
+                                      {errors.contact_email && <p className=" text-xs text-red-500">{errors.contact_email}</p>}
+
                                 </div>
 
                                 <div>
@@ -718,6 +734,7 @@ const BusinessProfile = () => {
                                         value={formData.contact_mobile}
                                         onChange={handleInputChange}
                                         maxLength={10}
+                                        minLength={10}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                                         placeholder="+1 (555) 000-0000"
                                     />
