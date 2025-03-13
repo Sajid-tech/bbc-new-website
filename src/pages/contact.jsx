@@ -40,7 +40,12 @@ export function Contact() {
   const validate = () => {
     let tempErrors = {};
     if (!formData.person_name) tempErrors.person_name = "Full Name is required";
-    if (!formData.email) tempErrors.email = "Email is required";
+    if (!formData.email) {
+      tempErrors.email = "Email is required";
+    } else if (!formData.email.endsWith(".com")) {
+      tempErrors.email = "Email must end with .com";
+    }
+  
     if (!formData.phone) tempErrors.phone = "Phone Number is required";
 
     setErrors(tempErrors);
@@ -57,10 +62,10 @@ export function Contact() {
     formPayload.append("contact_email", formData.email);
     formPayload.append("contact_mobile", formData.phone);
     formPayload.append("contact_message", formData.message);
-
+    console.log("contact payload",formPayload)
     try {
       const response = await axios.post(
-        "http://businessboosters.club/public/api/createContact",
+        "http://businessboosters.club/public/api/createContactD",
         formPayload,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -183,6 +188,7 @@ export function Contact() {
                 name="person_name"
                 value={formData.person_name}
                 onChange={handleInputChange}
+                
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.person_name ? "placeholder-red-500" : ""
                 }`}
@@ -199,10 +205,13 @@ export function Contact() {
                 type="email"
                 value={formData.email}
                 onChange={handleInputChange}
+               
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.email ? "placeholder-red-500" : ""
                 }`}
               />
+               {errors.email && <p className=" text-sm text-red-500">{errors.email}</p>}
+
             </div>
 
             <div>
@@ -213,6 +222,7 @@ export function Contact() {
                 placeholder="Enter your phone number"
                 name="phone"
                 value={formData.phone}
+                minLength={10}
                 onChange={handleInputChange}
                 className={`bg-gray-100 text-gray-700 placeholder-gray-400 ${
                   errors.phone ? "placeholder-red-500" : ""
