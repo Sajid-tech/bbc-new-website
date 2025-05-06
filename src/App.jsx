@@ -10,6 +10,7 @@ import ThankYou from "./pages/thankyou";
 import Failure from "./pages/failure";
 import BusinessProfile from "./pages/business-profile";
 import Floating from "./pages/floating";
+import Feedback from "./pages/feedback";
 
 function App() {
   const { pathname } = useLocation();
@@ -31,6 +32,7 @@ function App() {
         <Route path="/interest" element={<Interest/>} />
         <Route path="/thankyou" element={<ThankYou/>} />
         <Route path="/failure" element={<Failure/>} />
+        <Route path="/feedback" element={<Feedback/>} />
         <Route path="/business-profile/:id" element={<BusinessProfile/>} />
       </Routes>
     </>
